@@ -161,7 +161,7 @@ class _SkillsSectionState extends State<SkillsSection>
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: categoryColor.withOpacity(0.2),
+            color: categoryColor.withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(categoryIcon, color: categoryColor, size: 20),
@@ -203,7 +203,7 @@ class _SkillsSectionState extends State<SkillsSection>
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primaryBlue.withOpacity(0.1),
+            color: AppColors.primaryBlue.withValues(alpha: 0.1),
             blurRadius: 10,
             spreadRadius: 2,
           ),

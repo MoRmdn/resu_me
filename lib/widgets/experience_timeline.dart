@@ -90,7 +90,7 @@ class ExperienceTimeline extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primaryBlue.withOpacity(0.1),
+            color: AppColors.primaryBlue.withValues(alpha: 0.1),
             blurRadius: 20,
             spreadRadius: 5,
           ),
@@ -151,7 +151,7 @@ class ExperienceTimeline extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: (isCurrent ? AppColors.accentGreen : AppColors.primaryBlue)
-                .withOpacity(0.3),
+                .withValues(alpha: 0.3),
             blurRadius: 8,
             spreadRadius: 2,
           ),
@@ -188,9 +188,11 @@ class ExperienceTimeline extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: AppColors.accentGreen.withOpacity(0.2),
+              color: AppColors.accentGreen.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: AppColors.accentGreen.withOpacity(0.3)),
+              border: Border.all(
+                color: AppColors.accentGreen.withValues(alpha: 0.3),
+              ),
             ),
             child: const Text(
               'Current',
@@ -309,7 +311,7 @@ class ExperienceTimeline extends StatelessWidget {
                     color: AppColors.surfaceColor,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: AppColors.primaryBlue.withOpacity(0.3),
+                      color: AppColors.primaryBlue.withValues(alpha: 0.3),
                     ),
                   ),
                   child: Text(

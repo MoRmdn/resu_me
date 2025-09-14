@@ -102,7 +102,7 @@ class ProjectsSection extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primaryBlue.withOpacity(0.1),
+            color: AppColors.primaryBlue.withValues(alpha: 0.1),
             blurRadius: 20,
             spreadRadius: 5,
           ),
@@ -184,7 +184,7 @@ class ProjectsSection extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           decoration: BoxDecoration(
-            color: AppColors.primaryBlue.withOpacity(0.2),
+            color: AppColors.primaryBlue.withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Text(
@@ -243,9 +243,9 @@ class ProjectsSection extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColors.accentGreen.withOpacity(0.1),
+        color: AppColors.accentGreen.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.accentGreen.withOpacity(0.3)),
+        border: Border.all(color: AppColors.accentGreen.withValues(alpha: 0.3)),
       ),
       child: Row(
         children: [
@@ -311,7 +311,9 @@ class ProjectsSection extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.surfaceColor,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: AppColors.primaryBlue.withOpacity(0.3)),
+          border: Border.all(
+            color: AppColors.primaryBlue.withValues(alpha: 0.3),
+          ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

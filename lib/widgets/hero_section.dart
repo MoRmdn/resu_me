@@ -121,7 +121,7 @@ class _HeroSectionState extends State<HeroSection>
         gradient: AppColors.primaryGradient,
         boxShadow: [
           BoxShadow(
-            color: AppColors.primaryBlue.withOpacity(0.3),
+            color: AppColors.primaryBlue.withValues(alpha: 0.3),
             blurRadius: 20,
             spreadRadius: 5,
           ),
@@ -296,7 +296,7 @@ class AnimatedBackgroundPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = AppColors.primaryBlue.withOpacity(0.1)
+      ..color = AppColors.primaryBlue.withValues(alpha: 0.1)
       ..style = PaintingStyle.fill;
 
     // Draw animated circles
@@ -306,33 +306,33 @@ class AnimatedBackgroundPainter extends CustomPainter {
     canvas.drawCircle(
       center,
       size.width * 0.4,
-      paint..color = AppColors.accentCyan.withOpacity(0.05),
+      paint..color = AppColors.accentCyan.withValues(alpha: 0.05),
     );
 
     // Medium circles
     canvas.drawCircle(
       Offset(size.width * 0.2, size.height * 0.3),
       size.width * 0.15,
-      paint..color = AppColors.primaryBlue.withOpacity(0.08),
+      paint..color = AppColors.primaryBlue.withValues(alpha: 0.08),
     );
 
     canvas.drawCircle(
       Offset(size.width * 0.8, size.height * 0.7),
       size.width * 0.12,
-      paint..color = AppColors.accentPurple.withOpacity(0.06),
+      paint..color = AppColors.accentPurple.withValues(alpha: 0.06),
     );
 
     // Small circles
     canvas.drawCircle(
       Offset(size.width * 0.1, size.height * 0.8),
       size.width * 0.08,
-      paint..color = AppColors.accentGreen.withOpacity(0.1),
+      paint..color = AppColors.accentGreen.withValues(alpha: 0.1),
     );
 
     canvas.drawCircle(
       Offset(size.width * 0.9, size.height * 0.2),
       size.width * 0.06,
-      paint..color = AppColors.primaryBlue.withOpacity(0.1),
+      paint..color = AppColors.primaryBlue.withValues(alpha: 0.1),
     );
   }
 

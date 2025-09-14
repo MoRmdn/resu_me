@@ -132,7 +132,7 @@ class AboutSection extends StatelessWidget {
         gradient: AppColors.cardGradient,
         boxShadow: [
           BoxShadow(
-            color: AppColors.primaryBlue.withOpacity(0.2),
+            color: AppColors.primaryBlue.withValues(alpha: 0.2),
             blurRadius: 20,
             spreadRadius: 5,
           ),
@@ -178,7 +178,7 @@ class AboutSection extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.surfaceColor,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.primaryBlue.withOpacity(0.3)),
+        border: Border.all(color: AppColors.primaryBlue.withValues(alpha: 0.3)),
       ),
       child: Text(
         text,
@@ -231,9 +231,9 @@ class AboutSection extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -271,7 +271,7 @@ class AboutSection extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.primaryBlue.withOpacity(0.1),
+                  color: AppColors.primaryBlue.withValues(alpha: 0.1),
                   blurRadius: 20,
                   spreadRadius: 5,
                 ),
