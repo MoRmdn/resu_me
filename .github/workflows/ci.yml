@@ -16,7 +16,7 @@ jobs:
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.24.0'
+        flutter-version: '3.35.3'
         channel: 'stable'
     
     - name: Install dependencies
@@ -42,7 +42,7 @@ jobs:
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.24.0'
+        flutter-version: '3.35.3'
         channel: 'stable'
     
     - name: Install dependencies
@@ -57,4 +57,3 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./build/web
-        cname: https://m0rmdn.web.app/  # Replace with your actual domain or remove this line
