@@ -5,6 +5,7 @@ import '../utils/app_colors.dart';
 import '../utils/constants.dart';
 import '../utils/responsive_helper.dart';
 import '../services/url_launcher_service.dart';
+import '../services/firestore_service.dart';
 
 class ContactSection extends StatefulWidget {
   const ContactSection({super.key});
@@ -431,27 +432,74 @@ class _ContactSectionState extends State<ContactSection> {
         _isSubmitting = true;
       });
 
-      // Simulate form submission
-      await Future.delayed(const Duration(seconds: 2));
+      try {
+        // Submit form to Firestore
+        bool success = await FirestoreService.submitContactForm(
+          name: _nameController.text.trim(),
+          email: _emailController.text.trim(),
+          projectType: _projectTypeController.text.trim().isEmpty
+              ? null
+              : _projectTypeController.text.trim(),
+          budget: _budgetController.text.trim().isEmpty
+              ? null
+              : _budgetController.text.trim(),
+          message: _messageController.text.trim(),
+        );
 
-      setState(() {
-        _isSubmitting = false;
-      });
+        setState(() {
+          _isSubmitting = false;
+        });
 
-      // Show success message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Message sent successfully!'),
-          backgroundColor: AppColors.accentGreen,
-        ),
-      );
+        if (success) {
+          // Show success message
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: const Text(
+                  'Message sent successfully! I\'ll get back to you soon.',
+                ),
+                backgroundColor: AppColors.accentGreen,
+                duration: const Duration(seconds: 4),
+              ),
+            );
+          }
 
-      // Clear form
-      _nameController.clear();
-      _emailController.clear();
-      _projectTypeController.clear();
-      _budgetController.clear();
-      _messageController.clear();
+          // Clear form
+          _nameController.clear();
+          _emailController.clear();
+          _projectTypeController.clear();
+          _budgetController.clear();
+          _messageController.clear();
+        } else {
+          // Show error message
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: const Text(
+                  'Failed to send message. Please try again.',
+                ),
+                backgroundColor: Colors.red,
+                duration: const Duration(seconds: 3),
+              ),
+            );
+          }
+        }
+      } catch (e) {
+        setState(() {
+          _isSubmitting = false;
+        });
+
+        // Show error message
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error: ${e.toString()}'),
+              backgroundColor: Colors.red,
+              duration: const Duration(seconds: 3),
+            ),
+          );
+        }
+      }
     }
   }
 

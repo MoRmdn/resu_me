@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "107108353240",
+    "project_id": "m0rmdn",
+    "storage_bucket": "m0rmdn.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:107108353240:android:68da180fb6dfceedde03ad",
+        "android_client_info": {
+          "package_name": "com.mormdn.resume"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDR0GS8_Grb1FvrpM8Wm2cvD3f12vB_ZsA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
