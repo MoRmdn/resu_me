@@ -18,29 +18,50 @@ class PortfolioData {
         'Google Maps',
       ],
       tags: ['Social Network', 'AI', 'Matchmaking', 'Architecture'],
-      appStoreUrl: 'https://apps.apple.com/app/arcit-ai',
+      appStoreUrl: 'https://apps.apple.com/eg/app/arcit-ai/id6503910700',
       playStoreUrl:
-          'https://play.google.com/store/apps/details?id=com.arcit.ai',
+          'https://play.google.com/store/apps/details?id=com.mormdn.arcitAI',
       achievement: 'AI-driven features with 15% user engagement increase',
       category: 'Social Networking',
     ),
     Project(
-      title: 'Lpermis & Lpermis Pro',
+      title: 'Lpermis',
       description:
-          'Comprehensive driving education platform with testing and school management system.',
+          'Comprehensive driving education platform with testing and appointment scheduling system.',
       longDescription:
-          'Lpermis is a mobile application designed to test driving knowledge and schedule appointments at various driving schools across Morocco. Lpermis Pro is the companion system for driving schools to manage all lesson bookings with multiple user types and comprehensive administrative features.',
+          'Lpermis is a mobile application designed to test driving knowledge and schedule appointments at various driving schools across Morocco. The app features comprehensive test preparation, real-time appointment booking, and progress tracking for driving education.',
       technologies: [
         'Flutter',
         'GetX',
-        'Cubit',
         'SQLite',
         'Payment Integration',
+        'Real-time Booking',
       ],
-      tags: ['Education', 'Booking System', 'Multi-user', 'Morocco'],
-      appStoreUrl: 'https://apps.apple.com/app/lpermis',
-      playStoreUrl: 'https://play.google.com/store/apps/details?id=com.lpermis',
+      tags: ['Education', 'Booking System', 'Driving Test', 'Morocco'],
+      appStoreUrl: 'https://apps.apple.com/eg/app/lpermis/id1635317382',
+      playStoreUrl:
+          'https://play.google.com/store/apps/details?id=com.demetre.code',
       achievement: 'Market leader in Morocco driving education sector',
+      category: 'Education',
+    ),
+    Project(
+      title: 'Lpermis Pro',
+      description:
+          'Advanced school management system for driving schools with comprehensive administrative features.',
+      longDescription:
+          'Lpermis Pro is the companion system for driving schools to manage all lesson bookings with multiple user types and comprehensive administrative features. It includes instructor management, student tracking, payment processing, and detailed analytics.',
+      technologies: [
+        'Flutter',
+        'Cubit',
+        'Multi-user System',
+        'Payment Integration',
+        'Analytics',
+      ],
+      tags: ['Education', 'Management System', 'Multi-user', 'Analytics'],
+      appStoreUrl: 'https://apps.apple.com/eg/app/lpermis-pro/id6467557160',
+      playStoreUrl:
+          'https://play.google.com/store/apps/details?id=com.demetre.institution',
+      achievement: 'Streamlined school operations with 30% efficiency increase',
       category: 'Education',
     ),
     Project(
@@ -57,9 +78,10 @@ class PortfolioData {
         'Security',
       ],
       tags: ['Healthcare', 'Social Network', 'Scheduling', 'Real-time'],
-      appStoreUrl: 'https://apps.apple.com/app/mutabbib',
+      appStoreUrl:
+          'https://apps.apple.com/eg/app/mutabbib-%D9%85%D8%B7%D8%A8%D8%A8/id6563148338',
       playStoreUrl:
-          'https://play.google.com/store/apps/details?id=com.mutabbib',
+          'https://play.google.com/store/apps/details?id=com.mormdn.mutabbib',
       achievement: '25% increase in appointment bookings with HIPAA compliance',
       category: 'Healthcare',
     ),
@@ -77,9 +99,9 @@ class PortfolioData {
         'Multi-vendor',
       ],
       tags: ['E-commerce', 'Multi-vendor', 'Marketplace', 'Payment'],
-      appStoreUrl: 'https://apps.apple.com/app/saber-yamen',
+      appStoreUrl: 'https://apps.apple.com/gb/app/saber/id6467415590',
       playStoreUrl:
-          'https://play.google.com/store/apps/details?id=com.saberyamen',
+          'https://play.google.com/store/apps/details?id=com.elevenstars.saber',
       achievement:
           '20% performance improvement with optimized state management',
       category: 'E-commerce',

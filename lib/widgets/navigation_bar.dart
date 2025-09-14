@@ -62,14 +62,20 @@ class PortfolioNavigationBar extends StatelessWidget {
                 FontAwesomeIcons.github,
                 AppConstants.gitHubUrl,
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 12),
               _buildSocialIcon(
                 context,
                 FontAwesomeIcons.linkedin,
                 AppConstants.linkedInUrl,
               ),
+              const SizedBox(width: 12),
+              _buildSocialIcon(
+                context,
+                FontAwesomeIcons.whatsapp,
+                AppConstants.whatsappUrl,
+              ),
               if (ResponsiveHelper.isMobile(context)) ...[
-                const SizedBox(width: 16),
+                const SizedBox(width: 12),
                 _buildMobileMenuButton(context),
               ],
             ],
@@ -159,6 +165,43 @@ class PortfolioNavigationBar extends StatelessWidget {
             _buildMobileNavItem(context, 'Projects', 3),
             _buildMobileNavItem(context, 'Skills', 4),
             _buildMobileNavItem(context, 'Contact', 5),
+            const SizedBox(height: 24),
+            // Social Links in Mobile Menu
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildMobileSocialIcon(
+                  context,
+                  FontAwesomeIcons.github,
+                  AppConstants.gitHubUrl,
+                ),
+                _buildMobileSocialIcon(
+                  context,
+                  FontAwesomeIcons.linkedin,
+                  AppConstants.linkedInUrl,
+                ),
+                _buildMobileSocialIcon(
+                  context,
+                  FontAwesomeIcons.whatsapp,
+                  AppConstants.whatsappUrl,
+                ),
+                _buildMobileSocialIcon(
+                  context,
+                  FontAwesomeIcons.briefcase,
+                  AppConstants.freelancerUrl,
+                ),
+                _buildMobileSocialIcon(
+                  context,
+                  FontAwesomeIcons.userTie,
+                  AppConstants.upworkUrl,
+                ),
+                _buildMobileSocialIcon(
+                  context,
+                  FontAwesomeIcons.handshake,
+                  AppConstants.fiverrUrl,
+                ),
+              ],
+            ),
           ],
         ),
       ),
@@ -184,6 +227,29 @@ class PortfolioNavigationBar extends StatelessWidget {
           ),
           textAlign: TextAlign.center,
         ),
+      ),
+    );
+  }
+
+  Widget _buildMobileSocialIcon(
+    BuildContext context,
+    IconData icon,
+    String url,
+  ) {
+    return InkWell(
+      onTap: () {
+        Navigator.pop(context);
+        UrlLauncherService.openUrl(url);
+      },
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        width: 50,
+        height: 50,
+        decoration: BoxDecoration(
+          color: AppColors.surfaceColor,
+          borderRadius: BorderRadius.circular(25),
+        ),
+        child: Icon(icon, size: 20, color: AppColors.textSecondary),
       ),
     );
   }

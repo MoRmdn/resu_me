@@ -46,6 +46,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '107108353240',
     projectId: 'm0rmdn',
     authDomain: 'm0rmdn.firebaseapp.com',
+    databaseURL: 'https://m0rmdn-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'm0rmdn.firebasestorage.app',
     measurementId: 'G-1YCV718V1K',
   );
@@ -55,6 +56,7 @@ class DefaultFirebaseOptions {
     appId: '1:107108353240:android:68da180fb6dfceedde03ad',
     messagingSenderId: '107108353240',
     projectId: 'm0rmdn',
+    databaseURL: 'https://m0rmdn-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'm0rmdn.firebasestorage.app',
   );
 
@@ -63,6 +65,7 @@ class DefaultFirebaseOptions {
     appId: '1:107108353240:ios:27ae9d26d26e566ede03ad',
     messagingSenderId: '107108353240',
     projectId: 'm0rmdn',
+    databaseURL: 'https://m0rmdn-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'm0rmdn.firebasestorage.app',
     iosBundleId: 'com.mormdn.resume',
   );
@@ -72,6 +75,7 @@ class DefaultFirebaseOptions {
     appId: '1:107108353240:ios:27ae9d26d26e566ede03ad',
     messagingSenderId: '107108353240',
     projectId: 'm0rmdn',
+    databaseURL: 'https://m0rmdn-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'm0rmdn.firebasestorage.app',
     iosBundleId: 'com.mormdn.resume',
   );
@@ -82,7 +86,9 @@ class DefaultFirebaseOptions {
     messagingSenderId: '107108353240',
     projectId: 'm0rmdn',
     authDomain: 'm0rmdn.firebaseapp.com',
+    databaseURL: 'https://m0rmdn-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'm0rmdn.firebasestorage.app',
     measurementId: 'G-5T06GS60CQ',
   );
+
 }

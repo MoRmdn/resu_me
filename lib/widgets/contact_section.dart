@@ -5,7 +5,7 @@ import '../utils/app_colors.dart';
 import '../utils/constants.dart';
 import '../utils/responsive_helper.dart';
 import '../services/url_launcher_service.dart';
-import '../services/firestore_service.dart';
+import '../services/realtime_database_service.dart';
 
 class ContactSection extends StatefulWidget {
   const ContactSection({super.key});
@@ -144,7 +144,7 @@ class _ContactSectionState extends State<ContactSection> {
           'Email',
           AppConstants.developerEmail,
           () {
-            UrlLauncherService.launchEmail(AppConstants.developerEmail);
+            UrlLauncherService.openUrl(AppConstants.emailUrl);
           },
         ),
 
@@ -155,6 +155,16 @@ class _ContactSectionState extends State<ContactSection> {
           AppConstants.developerPhone,
           () {
             UrlLauncherService.launchPhone(AppConstants.developerPhone);
+          },
+        ),
+
+        _buildContactItem(
+          context,
+          FontAwesomeIcons.whatsapp,
+          'WhatsApp',
+          AppConstants.developerPhone,
+          () {
+            UrlLauncherService.openUrl(AppConstants.whatsappUrl);
           },
         ),
 
@@ -177,7 +187,9 @@ class _ContactSectionState extends State<ContactSection> {
         ),
         const SizedBox(height: 16),
 
-        Row(
+        Wrap(
+          spacing: 16,
+          runSpacing: 16,
           children: [
             _buildSocialButton(
               context,
@@ -188,7 +200,6 @@ class _ContactSectionState extends State<ContactSection> {
                 UrlLauncherService.openUrl(AppConstants.gitHubUrl);
               },
             ),
-            const SizedBox(width: 16),
             _buildSocialButton(
               context,
               FontAwesomeIcons.linkedin,
@@ -198,7 +209,6 @@ class _ContactSectionState extends State<ContactSection> {
                 UrlLauncherService.openUrl(AppConstants.linkedInUrl);
               },
             ),
-            const SizedBox(width: 16),
             _buildSocialButton(
               context,
               FontAwesomeIcons.globe,
@@ -206,6 +216,33 @@ class _ContactSectionState extends State<ContactSection> {
               AppColors.accentGreen,
               () {
                 UrlLauncherService.openUrl(AppConstants.khamsatUrl);
+              },
+            ),
+            _buildSocialButton(
+              context,
+              FontAwesomeIcons.briefcase,
+              'Freelancer',
+              AppColors.accentPurple,
+              () {
+                UrlLauncherService.openUrl(AppConstants.freelancerUrl);
+              },
+            ),
+            _buildSocialButton(
+              context,
+              FontAwesomeIcons.userTie,
+              'Upwork',
+              AppColors.accentCyan,
+              () {
+                UrlLauncherService.openUrl(AppConstants.upworkUrl);
+              },
+            ),
+            _buildSocialButton(
+              context,
+              FontAwesomeIcons.handshake,
+              'Fiverr',
+              AppColors.accentGreen,
+              () {
+                UrlLauncherService.openUrl(AppConstants.fiverrUrl);
               },
             ),
           ],
@@ -433,8 +470,8 @@ class _ContactSectionState extends State<ContactSection> {
       });
 
       try {
-        // Submit form to Firestore
-        bool success = await FirestoreService.submitContactForm(
+        // Submit form to Realtime Database
+        bool success = await RealtimeDatabaseService.submitContactForm(
           name: _nameController.text.trim(),
           email: _emailController.text.trim(),
           projectType: _projectTypeController.text.trim().isEmpty

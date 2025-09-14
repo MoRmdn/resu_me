@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "107108353240",
+    "firebase_url": "https://m0rmdn-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "m0rmdn",
     "storage_bucket": "m0rmdn.firebasestorage.app"
   },
