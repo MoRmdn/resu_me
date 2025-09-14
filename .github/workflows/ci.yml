@@ -1,11 +1,10 @@
 name: CI/CD Pipeline
 
-# Automatic triggers:
 on:
   push:
-    branches: [ main, develop ]  # Deploys on push to main/develop
+    branches: [ main, develop ]
   pull_request:
-    branches: [ main ]           # Runs tests on PRs
+    branches: [ main ]
 
 jobs:
   test:
@@ -17,7 +16,7 @@ jobs:
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.9.2'
+        flutter-version: '3.24.0'
         channel: 'stable'
     
     - name: Install dependencies
@@ -43,7 +42,7 @@ jobs:
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.9.2'
+        flutter-version: '3.24.0'
         channel: 'stable'
     
     - name: Install dependencies
@@ -58,4 +57,4 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./build/web
-        cname: your-domain.com  # Replace with your actual domain or remove this line
+        cname: https://m0rmdn.web.app/  # Replace with your actual domain or remove this line
