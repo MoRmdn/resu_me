@@ -6,20 +6,37 @@ class PortfolioData {
   static List<Project> get projects => [
     Project(
       title: 'Arcit-AI',
-      description: 'Innovative social networking platform connecting service providers with clients in architecture and home improvement sector.',
-      longDescription: 'Arcit-AI is a comprehensive social networking platform that revolutionizes the architecture and home improvement industry. It features a smart matchmaking system powered by AI-driven tools, connecting service providers (companies, professionals, suppliers, contractors) with clients seeking architectural and home improvement services.',
-      technologies: ['Flutter', 'Bloc', 'AI Integration', 'Firebase', 'Google Maps'],
+      description:
+          'Innovative social networking platform connecting service providers with clients in architecture and home improvement sector.',
+      longDescription:
+          'Arcit-AI is a comprehensive social networking platform that revolutionizes the architecture and home improvement industry. It features a smart matchmaking system powered by AI-driven tools, connecting service providers (companies, professionals, suppliers, contractors) with clients seeking architectural and home improvement services.',
+      technologies: [
+        'Flutter',
+        'Bloc',
+        'AI Integration',
+        'Firebase',
+        'Google Maps',
+      ],
       tags: ['Social Network', 'AI', 'Matchmaking', 'Architecture'],
       appStoreUrl: 'https://apps.apple.com/app/arcit-ai',
-      playStoreUrl: 'https://play.google.com/store/apps/details?id=com.arcit.ai',
+      playStoreUrl:
+          'https://play.google.com/store/apps/details?id=com.arcit.ai',
       achievement: 'AI-driven features with 15% user engagement increase',
       category: 'Social Networking',
     ),
     Project(
       title: 'Lpermis & Lpermis Pro',
-      description: 'Comprehensive driving education platform with testing and school management system.',
-      longDescription: 'Lpermis is a mobile application designed to test driving knowledge and schedule appointments at various driving schools across Morocco. Lpermis Pro is the companion system for driving schools to manage all lesson bookings with multiple user types and comprehensive administrative features.',
-      technologies: ['Flutter', 'GetX', 'Cubit', 'SQLite', 'Payment Integration'],
+      description:
+          'Comprehensive driving education platform with testing and school management system.',
+      longDescription:
+          'Lpermis is a mobile application designed to test driving knowledge and schedule appointments at various driving schools across Morocco. Lpermis Pro is the companion system for driving schools to manage all lesson bookings with multiple user types and comprehensive administrative features.',
+      technologies: [
+        'Flutter',
+        'GetX',
+        'Cubit',
+        'SQLite',
+        'Payment Integration',
+      ],
       tags: ['Education', 'Booking System', 'Multi-user', 'Morocco'],
       appStoreUrl: 'https://apps.apple.com/app/lpermis',
       playStoreUrl: 'https://play.google.com/store/apps/details?id=com.lpermis',
@@ -28,24 +45,43 @@ class PortfolioData {
     ),
     Project(
       title: 'Mutabbib',
-      description: 'Distinctive medical social network connecting users with hospitals, clinics, and doctors.',
-      longDescription: 'Mutabbib is a comprehensive healthcare mobile app that serves as a medical social network. It connects users with hospitals, clinics, and doctors, enabling easy tracking of schedules and availability. The app features real-time notifications, secure data storage compliant with healthcare standards, and seamless appointment booking.',
-      technologies: ['Flutter', 'Bloc', 'Real-time Sync', 'Healthcare APIs', 'Security'],
+      description:
+          'Distinctive medical social network connecting users with hospitals, clinics, and doctors.',
+      longDescription:
+          'Mutabbib is a comprehensive healthcare mobile app that serves as a medical social network. It connects users with hospitals, clinics, and doctors, enabling easy tracking of schedules and availability. The app features real-time notifications, secure data storage compliant with healthcare standards, and seamless appointment booking.',
+      technologies: [
+        'Flutter',
+        'Bloc',
+        'Real-time Sync',
+        'Healthcare APIs',
+        'Security',
+      ],
       tags: ['Healthcare', 'Social Network', 'Scheduling', 'Real-time'],
       appStoreUrl: 'https://apps.apple.com/app/mutabbib',
-      playStoreUrl: 'https://play.google.com/store/apps/details?id=com.mutabbib',
+      playStoreUrl:
+          'https://play.google.com/store/apps/details?id=com.mutabbib',
       achievement: '25% increase in appointment bookings with HIPAA compliance',
       category: 'Healthcare',
     ),
     Project(
       title: 'Saber Yamen',
-      description: 'Multi-vendor e-commerce platform for selling new and used items with intuitive interface.',
-      longDescription: 'Saber Yamen is a comprehensive multi-vendor e-commerce platform built from scratch. It enables vendors to sell both new and used items through an easy-to-use interface. The platform features advanced search capabilities, secure payment processing, and comprehensive vendor management tools.',
-      technologies: ['Flutter', 'GetX', 'E-commerce APIs', 'Payment Gateway', 'Multi-vendor'],
+      description:
+          'Multi-vendor e-commerce platform for selling new and used items with intuitive interface.',
+      longDescription:
+          'Saber Yamen is a comprehensive multi-vendor e-commerce platform built from scratch. It enables vendors to sell both new and used items through an easy-to-use interface. The platform features advanced search capabilities, secure payment processing, and comprehensive vendor management tools.',
+      technologies: [
+        'Flutter',
+        'GetX',
+        'E-commerce APIs',
+        'Payment Gateway',
+        'Multi-vendor',
+      ],
       tags: ['E-commerce', 'Multi-vendor', 'Marketplace', 'Payment'],
       appStoreUrl: 'https://apps.apple.com/app/saber-yamen',
-      playStoreUrl: 'https://play.google.com/store/apps/details?id=com.saberyamen',
-      achievement: '20% performance improvement with optimized state management',
+      playStoreUrl:
+          'https://play.google.com/store/apps/details?id=com.saberyamen',
+      achievement:
+          '20% performance improvement with optimized state management',
       category: 'E-commerce',
     ),
   ];
@@ -58,7 +94,8 @@ class PortfolioData {
       startDate: 'January 2025',
       endDate: 'Present',
       isCurrent: true,
-      description: 'Responsible for developing and maintaining cross-platform mobile applications for iOS and Android using Flutter, focusing on high-performance, scalable, and user-friendly mobile experiences.',
+      description:
+          'Responsible for developing and maintaining cross-platform mobile applications for iOS and Android using Flutter, focusing on high-performance, scalable, and user-friendly mobile experiences.',
       achievements: [
         'Designing and developing robust, scalable, and maintainable Flutter applications',
         'Translating Figma designs into responsive and visually appealing interfaces',
@@ -66,7 +103,14 @@ class PortfolioData {
         'Integrating Google ML Kit and AI-powered features into mobile applications',
         'Enhancing app speed, reducing load times, and ensuring smooth animations',
       ],
-      technologies: ['Flutter', 'Provider', 'Riverpod', 'Bloc', 'Google ML Kit', 'AI Integration'],
+      technologies: [
+        'Flutter',
+        'Provider',
+        'Riverpod',
+        'Bloc',
+        'Google ML Kit',
+        'AI Integration',
+      ],
     ),
     Experience(
       company: 'Demeter',
@@ -75,14 +119,21 @@ class PortfolioData {
       startDate: 'March 2023',
       endDate: 'January 2025',
       isCurrent: false,
-      description: 'Led the development of Lpermis from scratch, utilizing GetX for state management to ensure smooth performance and efficient UI updates.',
+      description:
+          'Led the development of Lpermis from scratch, utilizing GetX for state management to ensure smooth performance and efficient UI updates.',
       achievements: [
         'Led the development of Lpermis from scratch using GetX for state management',
         'Developed Lpermis Pro using Cubit for complex business logic',
         'Collaborated with designers for seamless user experience across devices',
         'Integrated external APIs for real-time tracking and payment functionalities',
       ],
-      technologies: ['Flutter', 'GetX', 'Cubit', 'API Integration', 'Payment Systems'],
+      technologies: [
+        'Flutter',
+        'GetX',
+        'Cubit',
+        'API Integration',
+        'Payment Systems',
+      ],
     ),
     Experience(
       company: 'Arcit-AI',
@@ -91,14 +142,21 @@ class PortfolioData {
       startDate: 'December 2023',
       endDate: 'December 2024',
       isCurrent: false,
-      description: 'Spearheaded the development of Arcit-AI using Bloc for state management, implementing AI-driven features like predictive analytics and data visualization.',
+      description:
+          'Spearheaded the development of Arcit-AI using Bloc for state management, implementing AI-driven features like predictive analytics and data visualization.',
       achievements: [
         'Spearheaded Arcit-AI development using Bloc for state management',
         'Implemented AI-driven features like predictive analytics and data visualization',
         'Collaborated with data science and backend teams for AI model integration',
         'Designed optimized UI/UX for intuitive data interaction',
       ],
-      technologies: ['Flutter', 'Bloc', 'AI Integration', 'Data Visualization', 'Predictive Analytics'],
+      technologies: [
+        'Flutter',
+        'Bloc',
+        'AI Integration',
+        'Data Visualization',
+        'Predictive Analytics',
+      ],
     ),
     Experience(
       company: 'Ebdda LTD',
@@ -107,14 +165,21 @@ class PortfolioData {
       startDate: 'January 2024',
       endDate: 'Present',
       isCurrent: true,
-      description: 'Developed Mutabbib, a healthcare mobile app, using Bloc to handle complex user flows, real-time data syncing, and secure data storage compliant with healthcare standards.',
+      description:
+          'Developed Mutabbib, a healthcare mobile app, using Bloc to handle complex user flows, real-time data syncing, and secure data storage compliant with healthcare standards.',
       achievements: [
         'Developed Mutabbib healthcare app using Bloc for complex user flows',
         'Integrated real-time notifications and scheduling features',
         'Ensured secure data storage compliant with healthcare standards',
         'Achieved 25% increase in appointment bookings',
       ],
-      technologies: ['Flutter', 'Bloc', 'Real-time Sync', 'Healthcare APIs', 'Security'],
+      technologies: [
+        'Flutter',
+        'Bloc',
+        'Real-time Sync',
+        'Healthcare APIs',
+        'Security',
+      ],
     ),
     Experience(
       company: 'Eleven Stars',
@@ -123,14 +188,21 @@ class PortfolioData {
       startDate: 'March 2023',
       endDate: 'February 2024',
       isCurrent: false,
-      description: 'Designed and implemented Saber Yamen, an e-commerce platform built from scratch using GetX for state management, enabling efficient navigation and data flow.',
+      description:
+          'Designed and implemented Saber Yamen, an e-commerce platform built from scratch using GetX for state management, enabling efficient navigation and data flow.',
       achievements: [
         'Designed and implemented Saber Yamen e-commerce platform from scratch',
         'Used GetX for efficient state management and navigation',
         'Developed Dental Diner using Cubit for appointment scheduling',
         'Implemented patient data synchronization and payment integrations',
       ],
-      technologies: ['Flutter', 'GetX', 'Cubit', 'E-commerce', 'Payment Integration'],
+      technologies: [
+        'Flutter',
+        'GetX',
+        'Cubit',
+        'E-commerce',
+        'Payment Integration',
+      ],
     ),
     Experience(
       company: 'Bracket Media Ltd',
@@ -139,14 +211,20 @@ class PortfolioData {
       startDate: 'May 2022',
       endDate: 'January 2023',
       isCurrent: false,
-      description: 'Led the upgrade of the company\'s primary app to support Null Safety, enhancing app performance and future-proofing the codebase.',
+      description:
+          'Led the upgrade of the company\'s primary app to support Null Safety, enhancing app performance and future-proofing the codebase.',
       achievements: [
         'Led upgrade to Null Safety, enhancing app performance',
         'Improved UI/UX by redesigning major components',
         'Achieved 15% increase in user satisfaction and engagement',
         'Added new features and worked on comprehensive bug fixes',
       ],
-      technologies: ['Flutter', 'Null Safety', 'UI/UX Design', 'Performance Optimization'],
+      technologies: [
+        'Flutter',
+        'Null Safety',
+        'UI/UX Design',
+        'Performance Optimization',
+      ],
     ),
     Experience(
       company: 'Cyparta',
@@ -155,36 +233,123 @@ class PortfolioData {
       startDate: 'April 2021',
       endDate: 'May 2022',
       isCurrent: false,
-      description: 'Delivered a multi-platform mobile app that integrated analytics, boosting user retention through data-driven optimizations.',
+      description:
+          'Delivered a multi-platform mobile app that integrated analytics, boosting user retention through data-driven optimizations.',
       achievements: [
         'Delivered multi-platform mobile app with integrated analytics',
         'Boosted user retention by 12% through data-driven optimizations',
         'Reduced app size by 10% through package optimization',
         'Updated UI for iPad compatibility and full-screen experience',
       ],
-      technologies: ['Flutter', 'Analytics', 'Performance Optimization', 'Cross-platform'],
+      technologies: [
+        'Flutter',
+        'Analytics',
+        'Performance Optimization',
+        'Cross-platform',
+      ],
     ),
   ];
 
   static List<Skill> get skills => [
     // Primary Skills (90-95%)
-    Skill(name: 'Dart & Flutter', percentage: 95, category: 'Primary', description: 'Expert-level proficiency in Flutter framework and Dart programming language'),
-    Skill(name: 'State Management (Bloc)', percentage: 90, category: 'Primary', description: 'Advanced knowledge of Bloc pattern for complex state management'),
-    Skill(name: 'State Management (GetX)', percentage: 90, category: 'Primary', description: 'Proficient in GetX for reactive state management and dependency injection'),
-    Skill(name: 'State Management (Cubit)', percentage: 90, category: 'Primary', description: 'Expert in Cubit for lightweight state management solutions'),
-    Skill(name: 'Cross-platform Development', percentage: 95, category: 'Primary', description: 'Specialized in building apps for both iOS and Android platforms'),
-    
+    Skill(
+      name: 'Dart & Flutter',
+      percentage: 95,
+      category: 'Primary',
+      description:
+          'Expert-level proficiency in Flutter framework and Dart programming language',
+    ),
+    Skill(
+      name: 'State Management (Bloc)',
+      percentage: 90,
+      category: 'Primary',
+      description:
+          'Advanced knowledge of Bloc pattern for complex state management',
+    ),
+    Skill(
+      name: 'State Management (GetX)',
+      percentage: 90,
+      category: 'Primary',
+      description:
+          'Proficient in GetX for reactive state management and dependency injection',
+    ),
+    Skill(
+      name: 'State Management (Cubit)',
+      percentage: 90,
+      category: 'Primary',
+      description: 'Expert in Cubit for lightweight state management solutions',
+    ),
+    Skill(
+      name: 'Cross-platform Development',
+      percentage: 95,
+      category: 'Primary',
+      description:
+          'Specialized in building apps for both iOS and Android platforms',
+    ),
+
     // Secondary Skills (80-90%)
-    Skill(name: 'API Integrations', percentage: 85, category: 'Secondary', description: 'Experienced in RESTful APIs, GraphQL, and third-party service integrations'),
-    Skill(name: 'Firebase', percentage: 85, category: 'Secondary', description: 'Comprehensive knowledge of Firebase services including Auth, Firestore, and Analytics'),
-    Skill(name: 'Clean Architecture', percentage: 80, category: 'Secondary', description: 'Implementation of SOLID principles and clean architecture patterns'),
-    Skill(name: 'Payment Systems', percentage: 85, category: 'Secondary', description: 'Integration of various payment gateways including Stripe, PayPal, and regional providers'),
-    
+    Skill(
+      name: 'API Integrations',
+      percentage: 85,
+      category: 'Secondary',
+      description:
+          'Experienced in RESTful APIs, GraphQL, and third-party service integrations',
+    ),
+    Skill(
+      name: 'Firebase',
+      percentage: 85,
+      category: 'Secondary',
+      description:
+          'Comprehensive knowledge of Firebase services including Auth, Firestore, and Analytics',
+    ),
+    Skill(
+      name: 'Clean Architecture',
+      percentage: 80,
+      category: 'Secondary',
+      description:
+          'Implementation of SOLID principles and clean architecture patterns',
+    ),
+    Skill(
+      name: 'Payment Systems',
+      percentage: 85,
+      category: 'Secondary',
+      description:
+          'Integration of various payment gateways including Stripe, PayPal, and regional providers',
+    ),
+
     // Tools & Technologies (75-85%)
-    Skill(name: 'Git/GitHub', percentage: 85, category: 'Tools', description: 'Proficient in version control, branching strategies, and collaborative development'),
-    Skill(name: 'SQLite', percentage: 80, category: 'Tools', description: 'Local database management and optimization for mobile applications'),
-    Skill(name: 'Google Maps API', percentage: 80, category: 'Tools', description: 'Integration of location services and mapping functionality'),
-    Skill(name: 'Socket.IO', percentage: 75, category: 'Tools', description: 'Real-time communication and live updates implementation'),
-    Skill(name: 'Testing', percentage: 80, category: 'Tools', description: 'Unit testing, widget testing, and integration testing practices'),
+    Skill(
+      name: 'Git/GitHub',
+      percentage: 85,
+      category: 'Tools',
+      description:
+          'Proficient in version control, branching strategies, and collaborative development',
+    ),
+    Skill(
+      name: 'SQLite',
+      percentage: 80,
+      category: 'Tools',
+      description:
+          'Local database management and optimization for mobile applications',
+    ),
+    Skill(
+      name: 'Google Maps API',
+      percentage: 80,
+      category: 'Tools',
+      description: 'Integration of location services and mapping functionality',
+    ),
+    Skill(
+      name: 'Socket.IO',
+      percentage: 75,
+      category: 'Tools',
+      description: 'Real-time communication and live updates implementation',
+    ),
+    Skill(
+      name: 'Testing',
+      percentage: 80,
+      category: 'Tools',
+      description:
+          'Unit testing, widget testing, and integration testing practices',
+    ),
   ];
 }

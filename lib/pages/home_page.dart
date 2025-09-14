@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
             currentSection: _currentSection,
             onSectionChanged: _scrollToSection,
           ),
-          
+
           // Main Content
           Expanded(
             child: ListView(
@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
                   index: 0,
                   child: const HeroSection(),
                 ),
-                
+
                 // About Section
                 AutoScrollTag(
                   key: const ValueKey(1),
@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                   index: 1,
                   child: const AboutSection(),
                 ),
-                
+
                 // Experience Timeline
                 AutoScrollTag(
                   key: const ValueKey(2),
@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                   index: 2,
                   child: const ExperienceTimeline(),
                 ),
-                
+
                 // Projects Section
                 AutoScrollTag(
                   key: const ValueKey(3),
@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage> {
                   index: 3,
                   child: const ProjectsSection(),
                 ),
-                
+
                 // Skills Section
                 AutoScrollTag(
                   key: const ValueKey(4),
@@ -98,7 +98,7 @@ class _HomePageState extends State<HomePage> {
                   index: 4,
                   child: const SkillsSection(),
                 ),
-                
+
                 // Contact Section
                 AutoScrollTag(
                   key: const ValueKey(5),

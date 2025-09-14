@@ -33,9 +33,9 @@ class PortfolioApp extends StatelessWidget {
         ),
         textTheme: GoogleFonts.interTextTheme(
           Theme.of(context).textTheme.apply(
-                bodyColor: AppColors.textPrimary,
-                displayColor: AppColors.textPrimary,
-              ),
+            bodyColor: AppColors.textPrimary,
+            displayColor: AppColors.textPrimary,
+          ),
         ),
         appBarTheme: AppBarTheme(
           backgroundColor: Colors.transparent,
