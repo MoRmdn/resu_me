@@ -1,10 +1,11 @@
 name: CI/CD Pipeline
 
+# Automatic triggers:
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, develop ]  # Deploys on push to main/develop
   pull_request:
-    branches: [ main ]
+    branches: [ main ]           # Runs tests on PRs
 
 jobs:
   test:
