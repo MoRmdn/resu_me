@@ -20,7 +20,7 @@ class AppConstants {
   static const String whatsappUrl = 'https://wa.me/+201281100168';
 
   // Social Links
-  static const String linkedInUrl = 'https://linkedin.com/in/eng-m-ramadan';
+  static const String linkedInUrl = 'https://linkedin.com/in/mormdn';
   static const String gitHubUrl = 'https://github.com/MoRmdn';
   static const String khamsatUrl = 'https://khamsat.com/user/m0rmdn';
   static const String freelancerUrl = 'https://www.freelancer.com/u/MoRmdn';
