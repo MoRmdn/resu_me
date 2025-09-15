@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyBdhjV01uYKRuGPAiS247TH0FM3rNNA9IE</string>
+	<string>YOUR_MACOS_API_KEY</string>
 	<key>GCM_SENDER_ID</key>
-	<string>107108353240</string>
+	<string>YOUR_SENDER_ID</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.mormdn.resume</string>
 	<key>PROJECT_ID</key>
-	<string>m0rmdn</string>
+	<string>YOUR_PROJECT_ID</string>
 	<key>STORAGE_BUCKET</key>
-	<string>m0rmdn.firebasestorage.app</string>
+	<string>YOUR_PROJECT_ID.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,8 +25,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:107108353240:ios:27ae9d26d26e566ede03ad</string>
+	<string>YOUR_MACOS_APP_ID</string>
 	<key>DATABASE_URL</key>
-	<string>https://m0rmdn-default-rtdb.europe-west1.firebasedatabase.app</string>
+	<string>https://YOUR_PROJECT_ID-default-rtdb.YOUR_REGION.firebasedatabase.app</string>
 </dict>
 </plist>

@@ -1,14 +1,14 @@
 {
   "project_info": {
-    "project_number": "107108353240",
-    "firebase_url": "https://m0rmdn-default-rtdb.europe-west1.firebasedatabase.app",
-    "project_id": "m0rmdn",
-    "storage_bucket": "m0rmdn.firebasestorage.app"
+    "project_number": "YOUR_PROJECT_NUMBER",
+    "firebase_url": "https://YOUR_PROJECT_ID-default-rtdb.YOUR_REGION.firebasedatabase.app",
+    "project_id": "YOUR_PROJECT_ID",
+    "storage_bucket": "YOUR_PROJECT_ID.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:107108353240:android:68da180fb6dfceedde03ad",
+        "mobilesdk_app_id": "YOUR_ANDROID_APP_ID",
         "android_client_info": {
           "package_name": "com.mormdn.resume"
         }
@@ -16,7 +16,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDR0GS8_Grb1FvrpM8Wm2cvD3f12vB_ZsA"
+          "current_key": "YOUR_ANDROID_API_KEY"
         }
       ],
       "services": {
