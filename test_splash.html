@@ -1,54 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
-  <base href="$FLUTTER_BASE_HREF">
-
   <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="Mohamed Ramadan - Professional Flutter Developer Portfolio">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- iOS meta tags & icons -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="Mohamed Ramadan Portfolio">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
-
-  <title>Mohamed Ramadan - Flutter Developer Portfolio</title>
-  <link rel="manifest" href="manifest.json">
-
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- Splash Screen Styles -->
+  <title>Splash Screen Test</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
     body {
       font-family: 'Inter', sans-serif;
-      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      background: #0F172A;
     }
 
     #splash-screen {
@@ -211,40 +172,27 @@
       50% { transform: translateY(-20px) rotate(180deg); }
     }
 
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      .logo-circle {
-        width: 100px;
-        height: 100px;
-      }
-      
-      .logo-circle::before {
-        width: 120px;
-        height: 120px;
-      }
-      
-      .logo-text {
-        font-size: 1.5rem;
-      }
-      
-      .app-title {
-        font-size: 2rem;
-      }
-      
-      .app-subtitle {
-        font-size: 1rem;
-      }
-      
-      .loading-bar {
-        width: 150px;
-      }
+    .test-content {
+      padding: 2rem;
+      color: #F8FAFC;
+      text-align: center;
     }
 
-    /* Hide splash screen when Flutter is ready */
-    .flutter-ready #splash-screen {
-      opacity: 0;
-      transform: scale(1.1);
-      pointer-events: none;
+    .test-button {
+      background: linear-gradient(135deg, #2563EB 0%, #06B6D4 100%);
+      color: #F8FAFC;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin: 1rem;
+      transition: transform 0.2s ease;
+    }
+
+    .test-button:hover {
+      transform: translateY(-2px);
     }
   </style>
 </head>
@@ -276,40 +224,37 @@
     </div>
   </div>
 
-  <script src="flutter_bootstrap.js" async></script>
-  
-  <!-- Splash Screen Script -->
+  <!-- Test Content -->
+  <div class="test-content" style="display: none;">
+    <h1>Splash Screen Test</h1>
+    <p>The splash screen has been successfully hidden!</p>
+    <button class="test-button" onclick="showSplash()">Show Splash Screen</button>
+    <button class="test-button" onclick="hideSplash()">Hide Splash Screen</button>
+  </div>
+
   <script>
-    // Wait for Flutter to be ready
-    window.addEventListener('flutter-first-frame', function () {
-      // Add a small delay for better UX
-      setTimeout(() => {
-        const splashScreen = document.getElementById('splash-screen');
-        splashScreen.classList.add('fade-out');
-        
-        // Remove splash screen after animation
-        setTimeout(() => {
-          splashScreen.style.display = 'none';
-          document.body.classList.add('flutter-ready');
-        }, 500);
-      }, 1000);
-    });
-
-    // Fallback: Hide splash screen after 5 seconds if Flutter doesn't load
-    setTimeout(() => {
+    function hideSplash() {
       const splashScreen = document.getElementById('splash-screen');
-      if (splashScreen && !document.body.classList.contains('flutter-ready')) {
-        splashScreen.classList.add('fade-out');
-        setTimeout(() => {
-          splashScreen.style.display = 'none';
-          document.body.classList.add('flutter-ready');
-        }, 500);
-      }
-    }, 5000);
+      splashScreen.classList.add('fade-out');
+      
+      setTimeout(() => {
+        splashScreen.style.display = 'none';
+        document.querySelector('.test-content').style.display = 'block';
+      }, 500);
+    }
 
-    // Add click interaction for better UX
+    function showSplash() {
+      const splashScreen = document.getElementById('splash-screen');
+      splashScreen.style.display = 'flex';
+      splashScreen.classList.remove('fade-out');
+      document.querySelector('.test-content').style.display = 'none';
+    }
+
+    // Auto-hide after 3 seconds for testing
+    setTimeout(hideSplash, 3000);
+
+    // Add click interaction
     document.getElementById('splash-screen').addEventListener('click', function() {
-      // Optional: Add a subtle interaction effect
       this.style.transform = 'scale(0.98)';
       setTimeout(() => {
         this.style.transform = 'scale(1)';

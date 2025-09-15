@@ -208,24 +208,39 @@ class ExperienceTimeline extends StatelessWidget {
   }
 
   Widget _buildExperienceMeta(BuildContext context, experience) {
-    return Row(
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
       children: [
-        Icon(Icons.calendar_today, size: 16, color: AppColors.textMuted),
-        const SizedBox(width: 8),
-        Text(
-          '${experience.startDate} - ${experience.endDate}',
-          style: Theme.of(
-            context,
-          ).textTheme.bodyMedium?.copyWith(color: AppColors.textMuted),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.calendar_today, size: 16, color: AppColors.textMuted),
+            const SizedBox(width: 8),
+            Text(
+              '${experience.startDate} - ${experience.endDate}',
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: AppColors.textMuted),
+            ),
+          ],
         ),
-        const SizedBox(width: 24),
-        Icon(Icons.location_on, size: 16, color: AppColors.textMuted),
-        const SizedBox(width: 8),
-        Text(
-          experience.location,
-          style: Theme.of(
-            context,
-          ).textTheme.bodyMedium?.copyWith(color: AppColors.textMuted),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.location_on, size: 16, color: AppColors.textMuted),
+            const SizedBox(width: 8),
+            Text(
+              experience.location,
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: AppColors.textMuted),
+            ),
+          ],
         ),
       ],
     );

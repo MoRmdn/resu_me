@@ -5,6 +5,7 @@ import 'firebase_options.dart';
 import 'utils/app_colors.dart';
 import 'utils/constants.dart';
 import 'pages/home_page.dart';
+import 'services/splash_screen_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,8 +13,25 @@ void main() async {
   runApp(const PortfolioApp());
 }
 
-class PortfolioApp extends StatelessWidget {
+class PortfolioApp extends StatefulWidget {
   const PortfolioApp({super.key});
+
+  @override
+  State<PortfolioApp> createState() => _PortfolioAppState();
+}
+
+class _PortfolioAppState extends State<PortfolioApp> {
+  @override
+  void initState() {
+    super.initState();
+    // Hide splash screen after Flutter is fully initialized
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Add a small delay to ensure everything is loaded
+      Future.delayed(const Duration(milliseconds: 500), () {
+        SplashScreenService.hideSplashScreen();
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -31,31 +31,49 @@ class PortfolioNavigationBar extends StatelessWidget {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
         children: [
-          // Logo/Name
-          Text(
-            AppConstants.developerName,
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: AppColors.primaryBlue,
+          Expanded(
+            child: Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              crossAxisAlignment: WrapCrossAlignment.start,
+              alignment: WrapAlignment.start,
+              children: [
+                // Logo/Name
+                Text(
+                  AppConstants.developerName,
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.primaryBlue,
+                  ),
+                ),
+
+                // Navigation Items (Desktop/Tablet)
+                if (!ResponsiveHelper.isMobile(context))
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _buildNavItem(context, 'Home', 0),
+                      _buildNavItem(context, 'About', 1),
+                      _buildNavItem(context, 'Experience', 2),
+                      _buildNavItem(context, 'Projects', 3),
+                      _buildNavItem(context, 'Skills', 4),
+                      _buildNavItem(context, 'Contact', 5),
+                    ],
+                  ),
+
+                // Social Links
+              ],
             ),
           ),
 
-          // Navigation Items (Desktop/Tablet)
-          if (!ResponsiveHelper.isMobile(context))
-            Row(
-              children: [
-                _buildNavItem(context, 'Home', 0),
-                _buildNavItem(context, 'About', 1),
-                _buildNavItem(context, 'Experience', 2),
-                _buildNavItem(context, 'Projects', 3),
-                _buildNavItem(context, 'Skills', 4),
-                _buildNavItem(context, 'Contact', 5),
-              ],
-            ),
-
-          // Social Links
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               _buildSocialIcon(
                 context,
@@ -74,12 +92,12 @@ class PortfolioNavigationBar extends StatelessWidget {
                 FontAwesomeIcons.whatsapp,
                 AppConstants.whatsappUrl,
               ),
-              if (ResponsiveHelper.isMobile(context)) ...[
-                const SizedBox(width: 12),
-                _buildMobileMenuButton(context),
-              ],
             ],
           ),
+          if (ResponsiveHelper.isMobile(context)) ...[
+            const SizedBox(width: 12),
+            _buildMobileMenuButton(context),
+          ],
         ],
       ),
     );
