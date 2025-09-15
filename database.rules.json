@@ -33,6 +33,16 @@
           ".validate": "newData.isString()"
         }
       }
+    },
+    "views": {
+      ".read": true,
+      ".write": true,
+      "total": {
+        ".validate": "newData.isNumber() && newData.val() >= 0"
+      },
+      "lastUpdated": {
+        ".validate": "newData.isNumber()"
+      }
     }
   }
 }

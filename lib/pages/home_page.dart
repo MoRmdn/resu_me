@@ -8,6 +8,7 @@ import '../widgets/projects_section.dart';
 import '../widgets/skills_section.dart';
 import '../widgets/contact_section.dart';
 import '../widgets/navigation_bar.dart';
+import '../services/realtime_database_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -24,6 +25,17 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _scrollController = AutoScrollController();
+    // Track page view
+    _trackPageView();
+  }
+
+  void _trackPageView() async {
+    try {
+      await RealtimeDatabaseService.incrementViews();
+    } catch (e) {
+      // Silently handle errors to not disrupt user experience
+      debugPrint('Error tracking page view: $e');
+    }
   }
 
   @override

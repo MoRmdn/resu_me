@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 class RealtimeDatabaseService {
   static final FirebaseDatabase _database = FirebaseDatabase.instance;
   static const String _contactPath = 'contact_submissions';
+  static const String _viewsPath = 'views';
 
   /// Submit a contact form to Realtime Database
   static Future<bool> submitContactForm({
@@ -72,5 +73,52 @@ class RealtimeDatabaseService {
       }
       return false;
     }
+  }
+
+  /// Increment the total views count
+  static Future<bool> incrementViews() async {
+    try {
+      final viewsRef = _database.ref('$_viewsPath/total');
+      
+      // Use transaction to safely increment the counter
+      await viewsRef.runTransaction((Object? currentViews) {
+        int currentCount = 0;
+        if (currentViews != null) {
+          currentCount = currentViews as int;
+        }
+        return Transaction.success(currentCount + 1);
+      });
+
+      // Update the last updated timestamp
+      await _database.ref('$_viewsPath/lastUpdated').set(ServerValue.timestamp);
+      
+      return true;
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('Error incrementing views: $e');
+      }
+      return false;
+    }
+  }
+
+  /// Get the current total views count
+  static Future<int> getTotalViews() async {
+    try {
+      final snapshot = await _database.ref('$_viewsPath/total').get();
+      if (snapshot.exists) {
+        return snapshot.value as int;
+      }
+      return 0;
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('Error getting total views: $e');
+      }
+      return 0;
+    }
+  }
+
+  /// Stream of total views count for real-time updates
+  static Stream<DatabaseEvent> getViewsStream() {
+    return _database.ref('$_viewsPath/total').onValue;
   }
 }

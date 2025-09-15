@@ -4,6 +4,7 @@ import '../utils/app_colors.dart';
 import '../utils/constants.dart';
 import '../utils/responsive_helper.dart';
 import '../services/url_launcher_service.dart';
+import '../services/realtime_database_service.dart';
 
 class HeroSection extends StatefulWidget {
   const HeroSection({super.key});
@@ -17,6 +18,7 @@ class _HeroSectionState extends State<HeroSection>
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
+  int _totalViews = 0;
 
   @override
   void initState() {
@@ -39,6 +41,20 @@ class _HeroSectionState extends State<HeroSection>
         );
 
     _animationController.forward();
+    _loadViewsCount();
+  }
+
+  void _loadViewsCount() async {
+    try {
+      final viewsCount = await RealtimeDatabaseService.getTotalViews();
+      if (mounted) {
+        setState(() {
+          _totalViews = viewsCount;
+        });
+      }
+    } catch (e) {
+      debugPrint('Error loading views count: $e');
+    }
   }
 
   @override
@@ -85,6 +101,11 @@ class _HeroSectionState extends State<HeroSection>
 
                       // Location
                       _buildLocation(),
+
+                      const SizedBox(height: 16),
+
+                      // Views Counter
+                      _buildViewsCounter(),
 
                       const SizedBox(height: 40),
 
@@ -219,6 +240,43 @@ class _HeroSectionState extends State<HeroSection>
         ),
       ],
     );
+  }
+
+  Widget _buildViewsCounter() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: AppColors.cardBackground.withValues(alpha: 0.3),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: AppColors.primaryBlue.withValues(alpha: 0.3),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.visibility, color: AppColors.accentCyan, size: 16),
+          const SizedBox(width: 8),
+          Text(
+            '${_formatViewsCount(_totalViews)} views',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: AppColors.textSecondary,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _formatViewsCount(int count) {
+    if (count >= 1000000) {
+      return '${(count / 1000000).toStringAsFixed(1)}M';
+    } else if (count >= 1000) {
+      return '${(count / 1000).toStringAsFixed(1)}K';
+    }
+    return count.toString();
   }
 
   Widget _buildCallToActionButtons() {
