@@ -78,24 +78,30 @@ class RealtimeDatabaseService {
   /// Increment the total views count
   static Future<bool> incrementViews() async {
     try {
+      debugPrint('🔥 Starting views increment...');
       final viewsRef = _database.ref('$_viewsPath/total');
-      
+
       // Use transaction to safely increment the counter
       await viewsRef.runTransaction((Object? currentViews) {
         int currentCount = 0;
         if (currentViews != null) {
           currentCount = currentViews as int;
         }
+        debugPrint(
+          '📊 Current views: $currentCount, incrementing to: ${currentCount + 1}',
+        );
         return Transaction.success(currentCount + 1);
       });
 
       // Update the last updated timestamp
       await _database.ref('$_viewsPath/lastUpdated').set(ServerValue.timestamp);
-      
+
+      debugPrint('✅ Views incremented successfully!');
       return true;
     } catch (e) {
+      debugPrint('❌ Error incrementing views: $e');
       if (kDebugMode) {
-        debugPrint('Error incrementing views: $e');
+        debugPrint('Full error details: $e');
       }
       return false;
     }
@@ -104,14 +110,19 @@ class RealtimeDatabaseService {
   /// Get the current total views count
   static Future<int> getTotalViews() async {
     try {
+      debugPrint('📖 Fetching total views...');
       final snapshot = await _database.ref('$_viewsPath/total').get();
       if (snapshot.exists) {
-        return snapshot.value as int;
+        final views = snapshot.value as int;
+        debugPrint('📊 Total views found: $views');
+        return views;
       }
+      debugPrint('📊 No views data found, returning 0');
       return 0;
     } catch (e) {
+      debugPrint('❌ Error getting total views: $e');
       if (kDebugMode) {
-        debugPrint('Error getting total views: $e');
+        debugPrint('Full error details: $e');
       }
       return 0;
     }

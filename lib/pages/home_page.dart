@@ -31,10 +31,15 @@ class _HomePageState extends State<HomePage> {
 
   void _trackPageView() async {
     try {
-      await RealtimeDatabaseService.incrementViews();
+      debugPrint('🔄 Attempting to track page view...');
+      final success = await RealtimeDatabaseService.incrementViews();
+      if (success) {
+        debugPrint('✅ Page view tracked successfully!');
+      } else {
+        debugPrint('❌ Failed to track page view');
+      }
     } catch (e) {
-      // Silently handle errors to not disrupt user experience
-      debugPrint('Error tracking page view: $e');
+      debugPrint('❌ Error tracking page view: $e');
     }
   }
 

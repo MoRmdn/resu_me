@@ -46,14 +46,17 @@ class _HeroSectionState extends State<HeroSection>
 
   void _loadViewsCount() async {
     try {
+      debugPrint('🎯 Loading views count in hero section...');
       final viewsCount = await RealtimeDatabaseService.getTotalViews();
+      debugPrint('📊 Views count received: $viewsCount');
       if (mounted) {
         setState(() {
           _totalViews = viewsCount;
         });
+        debugPrint('✅ Views count updated in UI: $_totalViews');
       }
     } catch (e) {
-      debugPrint('Error loading views count: $e');
+      debugPrint('❌ Error loading views count: $e');
     }
   }
 
