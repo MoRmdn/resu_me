@@ -42,10 +42,14 @@ Added to `RealtimeDatabaseService`:
 - **Design**: Styled as a pill-shaped container with an eye icon and formatted count
 - **Formatting**: Large numbers are formatted (e.g., 1.2K, 1.5M)
 - **Styling**: Uses app's color scheme with subtle background and border
+- **Real-time Updates**: Automatically updates when database changes
+- **Debug Mode**: Includes refresh button for testing (debug builds only)
 
 ### Tracking Logic
 - Views are incremented when the `HomePage` widget initializes
 - Uses Firebase transactions to prevent race conditions
+- Real-time listener automatically updates the UI when database changes
+- Fallback mechanism ensures views are loaded even if real-time stream fails
 - Error handling ensures the app continues to work even if tracking fails
 
 ## Features

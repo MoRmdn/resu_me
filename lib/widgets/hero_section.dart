@@ -1,5 +1,9 @@
+import 'dart:async' show StreamSubscription;
+
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:firebase_database/firebase_database.dart';
 import '../utils/app_colors.dart';
 import '../utils/constants.dart';
 import '../utils/responsive_helper.dart';
@@ -19,6 +23,7 @@ class _HeroSectionState extends State<HeroSection>
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
   int _totalViews = 0;
+  StreamSubscription<DatabaseEvent>? _viewsSubscription;
 
   @override
   void initState() {
@@ -41,28 +46,56 @@ class _HeroSectionState extends State<HeroSection>
         );
 
     _animationController.forward();
-    _loadViewsCount();
+    _setupViewsListener();
   }
 
-  void _loadViewsCount() async {
+  void _setupViewsListener() {
+    debugPrint('🎯 Setting up real-time views listener...');
+
+    // Listen to real-time updates from Firebase
+    _viewsSubscription = RealtimeDatabaseService.getViewsStream().listen(
+      (DatabaseEvent event) {
+        if (event.snapshot.exists) {
+          final viewsCount = event.snapshot.value as int;
+          debugPrint('📊 Real-time views update: $viewsCount');
+          if (mounted) {
+            setState(() {
+              _totalViews = viewsCount;
+            });
+            debugPrint('✅ Views count updated in UI: $_totalViews');
+          }
+        } else {
+          debugPrint('📊 No views data found in real-time stream');
+        }
+      },
+      onError: (error) {
+        debugPrint('❌ Error in views stream: $error');
+        // Fallback to one-time fetch if stream fails
+        _loadViewsCountFallback();
+      },
+    );
+  }
+
+  void _loadViewsCountFallback() async {
     try {
-      debugPrint('🎯 Loading views count in hero section...');
+      debugPrint('🔄 Fallback: Loading views count...');
       final viewsCount = await RealtimeDatabaseService.getTotalViews();
-      debugPrint('📊 Views count received: $viewsCount');
+      debugPrint('📊 Fallback views count received: $viewsCount');
       if (mounted) {
         setState(() {
           _totalViews = viewsCount;
         });
-        debugPrint('✅ Views count updated in UI: $_totalViews');
+        debugPrint('✅ Fallback views count updated in UI: $_totalViews');
       }
     } catch (e) {
-      debugPrint('❌ Error loading views count: $e');
+      debugPrint('❌ Error in fallback views loading: $e');
     }
   }
 
   @override
   void dispose() {
     _animationController.dispose();
+    _viewsSubscription?.cancel();
     super.dispose();
   }
 
@@ -268,6 +301,27 @@ class _HeroSectionState extends State<HeroSection>
               fontWeight: FontWeight.w500,
             ),
           ),
+          const SizedBox(width: 8),
+          // Debug refresh button (only in debug mode)
+          if (kDebugMode)
+            GestureDetector(
+              onTap: () {
+                debugPrint('🔄 Manual refresh triggered');
+                _loadViewsCountFallback();
+              },
+              child: Container(
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryBlue.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: const Icon(
+                  Icons.refresh,
+                  color: AppColors.accentCyan,
+                  size: 12,
+                ),
+              ),
+            ),
         ],
       ),
     );
