@@ -10,10 +10,15 @@ class AppConstants {
   static const String developerGitHub = 'MoRmdn';
 
   // Professional Stats
-  static const int yearsExperience = 4;
+  static const int yearsExperience = 5;
   static const int appsDelivered = 20;
-  static const String experienceText = '4+ Years Experience';
+  static const String experienceText = '5+ Years Experience';
   static const String appsText = '20+ Apps Delivered';
+
+  // Track record (hero stat card)
+  static const int appsLiveBothStores = 10;
+  static const int teamsCount = 7;
+  static const String countriesText = '6 countries';
 
   // Contact Links
   static const String emailUrl = 'mailto:mormdn@outlook.com';
@@ -64,8 +69,8 @@ class AppConstants {
   static const Duration longAnimation = Duration(milliseconds: 800);
 
   // Responsive Breakpoints
-  static const double mobileBreakpoint = 768;
-  static const double tabletBreakpoint = 1024;
+  static const double mobileBreakpoint = 680;
+  static const double tabletBreakpoint = 900;
   static const double desktopBreakpoint = 1200;
 
   // Spacing
@@ -73,4 +78,9 @@ class AppConstants {
   static const double cardSpacing = 24.0;
   static const double smallSpacing = 16.0;
   static const double largeSpacing = 32.0;
+
+  // Obsidian & Copper layout tokens
+  static const double maxContentWidth = 1240.0;
+  static const double sectionPaddingDesktop = 128.0;
+  static const double sectionPaddingMobile = 76.0;
 }

@@ -1,6 +1,5 @@
 import '../models/project.dart';
 import '../models/experience.dart';
-import '../models/skill.dart';
 
 class PortfolioData {
   static List<Project> get projects => [
@@ -21,6 +20,7 @@ class PortfolioData {
       appStoreUrl: 'https://apps.apple.com/eg/app/arcit-ai/id6503910700',
       playStoreUrl:
           'https://play.google.com/store/apps/details?id=com.mormdn.arcitAI',
+      imageUrl: 'assets/images/arcit-ai.png',
       achievement: 'AI-driven features with 15% user engagement increase',
       category: 'Social Networking',
     ),
@@ -269,109 +269,6 @@ class PortfolioData {
         'Performance Optimization',
         'Cross-platform',
       ],
-    ),
-  ];
-
-  static List<Skill> get skills => [
-    // Primary Skills (90-95%)
-    Skill(
-      name: 'Dart & Flutter',
-      percentage: 95,
-      category: 'Primary',
-      description:
-          'Expert-level proficiency in Flutter framework and Dart programming language',
-    ),
-    Skill(
-      name: 'State Management (Bloc)',
-      percentage: 90,
-      category: 'Primary',
-      description:
-          'Advanced knowledge of Bloc pattern for complex state management',
-    ),
-    Skill(
-      name: 'State Management (GetX)',
-      percentage: 90,
-      category: 'Primary',
-      description:
-          'Proficient in GetX for reactive state management and dependency injection',
-    ),
-    Skill(
-      name: 'State Management (Cubit)',
-      percentage: 90,
-      category: 'Primary',
-      description: 'Expert in Cubit for lightweight state management solutions',
-    ),
-    Skill(
-      name: 'Cross-platform Development',
-      percentage: 95,
-      category: 'Primary',
-      description:
-          'Specialized in building apps for both iOS and Android platforms',
-    ),
-
-    // Secondary Skills (80-90%)
-    Skill(
-      name: 'API Integrations',
-      percentage: 85,
-      category: 'Secondary',
-      description:
-          'Experienced in RESTful APIs, GraphQL, and third-party service integrations',
-    ),
-    Skill(
-      name: 'Firebase',
-      percentage: 85,
-      category: 'Secondary',
-      description:
-          'Comprehensive knowledge of Firebase services including Auth, Firestore, and Analytics',
-    ),
-    Skill(
-      name: 'Clean Architecture',
-      percentage: 80,
-      category: 'Secondary',
-      description:
-          'Implementation of SOLID principles and clean architecture patterns',
-    ),
-    Skill(
-      name: 'Payment Systems',
-      percentage: 85,
-      category: 'Secondary',
-      description:
-          'Integration of various payment gateways including Stripe, PayPal, and regional providers',
-    ),
-
-    // Tools & Technologies (75-85%)
-    Skill(
-      name: 'Git/GitHub',
-      percentage: 85,
-      category: 'Tools',
-      description:
-          'Proficient in version control, branching strategies, and collaborative development',
-    ),
-    Skill(
-      name: 'SQLite',
-      percentage: 80,
-      category: 'Tools',
-      description:
-          'Local database management and optimization for mobile applications',
-    ),
-    Skill(
-      name: 'Google Maps API',
-      percentage: 80,
-      category: 'Tools',
-      description: 'Integration of location services and mapping functionality',
-    ),
-    Skill(
-      name: 'Socket.IO',
-      percentage: 75,
-      category: 'Tools',
-      description: 'Real-time communication and live updates implementation',
-    ),
-    Skill(
-      name: 'Testing',
-      percentage: 80,
-      category: 'Tools',
-      description:
-          'Unit testing, widget testing, and integration testing practices',
     ),
   ];
 }

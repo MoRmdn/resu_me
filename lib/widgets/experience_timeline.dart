@@ -1,347 +1,381 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import '../models/experience.dart';
 import '../utils/app_colors.dart';
 import '../utils/constants.dart';
 import '../utils/responsive_helper.dart';
 import '../data/portfolio_data.dart';
+import 'eyebrow.dart';
 
 class ExperienceTimeline extends StatelessWidget {
   const ExperienceTimeline({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = ResponsiveHelper.isMobile(context);
+
     return Container(
-      padding: ResponsiveHelper.getResponsivePadding(context),
-      child: Column(
-        children: [
-          // Section Header
-          _buildSectionHeader(context),
-
-          const SizedBox(height: AppConstants.sectionSpacing),
-
-          // Timeline
-          _buildTimeline(context),
-        ],
+      color: AppColors.ink800,
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 20 : 32,
+        vertical: isMobile
+            ? AppConstants.sectionPaddingMobile
+            : AppConstants.sectionPaddingDesktop,
       ),
-    );
-  }
-
-  Widget _buildSectionHeader(BuildContext context) {
-    return AnimationConfiguration.staggeredList(
-      position: 0,
-      duration: const Duration(milliseconds: 600),
-      child: SlideAnimation(
-        verticalOffset: 50.0,
-        child: FadeInAnimation(
+      child: Center(
+        heightFactor: 1,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            maxWidth: AppConstants.maxContentWidth,
+          ),
           child: Column(
-            children: [
-              Text(
-                'Professional Experience',
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Container(
-                width: 60,
-                height: 4,
-                decoration: BoxDecoration(
-                  gradient: AppColors.primaryGradient,
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTimeline(BuildContext context) {
-    return AnimationConfiguration.staggeredList(
-      position: 1,
-      duration: const Duration(milliseconds: 600),
-      child: Column(
-        children: List.generate(
-          PortfolioData.experiences.length,
-          (index) => SlideAnimation(
-            horizontalOffset: index.isEven ? -50.0 : 50.0,
-            child: FadeInAnimation(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 32),
-                child: _buildExperienceCard(
-                  context,
-                  PortfolioData.experiences[index],
-                  index,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildExperienceCard(BuildContext context, experience, int index) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: AppColors.cardGradient,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primaryBlue.withValues(alpha: 0.1),
-            blurRadius: 20,
-            spreadRadius: 5,
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Row(
-          children: [
-            // Timeline Indicator
-            _buildTimelineIndicator(experience.isCurrent),
-
-            const SizedBox(width: 24),
-
-            // Content
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Header
-                  _buildExperienceHeader(context, experience),
-
-                  const SizedBox(height: 12),
-
-                  // Duration and Location
-                  _buildExperienceMeta(context, experience),
-
-                  const SizedBox(height: 16),
-
-                  // Description
-                  _buildExperienceDescription(context, experience),
-
-                  const SizedBox(height: 16),
-
-                  // Achievements
-                  _buildAchievements(context, experience),
-
-                  const SizedBox(height: 16),
-
-                  // Technologies
-                  _buildTechnologies(context, experience),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTimelineIndicator(bool isCurrent) {
-    return Container(
-      width: 16,
-      height: 16,
-      decoration: BoxDecoration(
-        color: isCurrent ? AppColors.accentGreen : AppColors.primaryBlue,
-        shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(
-            color: (isCurrent ? AppColors.accentGreen : AppColors.primaryBlue)
-                .withValues(alpha: 0.3),
-            blurRadius: 8,
-            spreadRadius: 2,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildExperienceHeader(BuildContext context, experience) {
-    return Row(
-      children: [
-        Expanded(
-          child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                experience.position,
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
-                ),
+              Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                crossAxisAlignment: WrapCrossAlignment.end,
+                spacing: 16,
+                runSpacing: 12,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Eyebrow('02 / Experience'),
+                      const SizedBox(height: 18),
+                      Text(
+                        'Seven teams, six countries.',
+                        style: TextStyle(
+                          fontSize: isMobile ? 30 : 40,
+                          height: 1.0,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: -1.2,
+                          color: AppColors.bone,
+                        ),
+                      ),
+                    ],
+                  ),
+                  if (!isMobile)
+                    Text(
+                      'tap a row to expand ↓',
+                      style: TextStyle(
+                        fontFamily: 'JetBrains Mono',
+                        fontSize: 12,
+                        color: AppColors.bone38,
+                      ),
+                    ),
+                ],
               ),
-              Text(
-                experience.company,
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: AppColors.primaryBlue,
-                  fontWeight: FontWeight.w600,
+              const SizedBox(height: 48),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border(top: BorderSide(color: AppColors.line)),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    for (final e in PortfolioData.experiences)
+                      _ExperienceRow(experience: e),
+                  ],
                 ),
               ),
             ],
           ),
         ),
-        if (experience.isCurrent)
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: AppColors.accentGreen.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: AppColors.accentGreen.withValues(alpha: 0.3),
+      ),
+    );
+  }
+}
+
+class _ExperienceRow extends StatefulWidget {
+  final Experience experience;
+  const _ExperienceRow({required this.experience});
+
+  @override
+  State<_ExperienceRow> createState() => _ExperienceRowState();
+}
+
+class _ExperienceRowState extends State<_ExperienceRow>
+    with SingleTickerProviderStateMixin {
+  bool _open = false;
+  late final AnimationController _controller;
+  late final Animation<double> _curve;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 280),
+      vsync: this,
+    );
+    _curve = CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _toggle() {
+    setState(() => _open = !_open);
+    _open ? _controller.forward() : _controller.reverse();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final e = widget.experience;
+    final isMobile = ResponsiveHelper.isMobile(context);
+
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(color: AppColors.line)),
+      ),
+      child: InkWell(
+        onTap: _toggle,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 22,
+                  horizontal: 4,
+                ),
+                child: isMobile ? _mobileSummary(e) : _desktopSummary(e),
               ),
-            ),
-            child: const Text(
-              'Current',
-              style: TextStyle(
-                color: AppColors.accentGreen,
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
+              SizeTransition(
+                sizeFactor: _curve,
+                alignment: Alignment.topCenter,
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    left: isMobile ? 28 : 64,
+                    right: 4,
+                    bottom: 30,
+                  ),
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 680),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          e.description,
+                          style: TextStyle(
+                            fontSize: 15,
+                            height: 1.75,
+                            color: AppColors.bone62,
+                          ),
+                        ),
+                        const SizedBox(height: 14),
+                        for (final a in e.achievements)
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8),
+                                  child: Container(
+                                    width: 4,
+                                    height: 4,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.copper,
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Text(
+                                    a,
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      height: 1.6,
+                                      color: AppColors.bone62,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
-      ],
-    );
-  }
-
-  Widget _buildExperienceMeta(BuildContext context, experience) {
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.calendar_today, size: 16, color: AppColors.textMuted),
-            const SizedBox(width: 8),
-            Text(
-              '${experience.startDate} - ${experience.endDate}',
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: AppColors.textMuted),
-            ),
-          ],
         ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.location_on, size: 16, color: AppColors.textMuted),
-            const SizedBox(width: 8),
-            Text(
-              experience.location,
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: AppColors.textMuted),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildExperienceDescription(BuildContext context, experience) {
-    return Text(
-      experience.description,
-      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-        color: AppColors.textSecondary,
-        height: 1.6,
       ),
     );
   }
 
-  Widget _buildAchievements(BuildContext context, experience) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _desktopSummary(Experience e) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(
-          'Key Achievements:',
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.w600,
-            color: AppColors.textPrimary,
-          ),
-        ),
-        const SizedBox(height: 8),
-        ...experience.achievements.map<Widget>(
-          (achievement) => Padding(
-            padding: const EdgeInsets.only(bottom: 4),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        _node(),
+        const SizedBox(width: 20),
+        Expanded(
+          child: Text.rich(
+            TextSpan(
               children: [
-                Container(
-                  width: 4,
-                  height: 4,
-                  margin: const EdgeInsets.only(top: 8, right: 12),
-                  decoration: const BoxDecoration(
-                    color: AppColors.accentCyan,
-                    shape: BoxShape.circle,
+                TextSpan(
+                  text: e.position,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: -0.4,
+                    color: _open ? AppColors.copper : AppColors.bone,
                   ),
                 ),
-                Expanded(
-                  child: Text(
-                    achievement,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSecondary,
-                      height: 1.4,
-                    ),
+                TextSpan(
+                  text: ' · ${e.company}',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.bone45,
                   ),
                 ),
               ],
             ),
           ),
         ),
+        const SizedBox(width: 20),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (e.isCurrent) ...[
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.jade.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(999),
+                ),
+                child: Text(
+                  'CURRENT',
+                  style: TextStyle(
+                    fontFamily: 'JetBrains Mono',
+                    fontSize: 11,
+                    letterSpacing: 1,
+                    color: AppColors.jade,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+            ],
+            Text(
+              '${e.startDate} — ${e.endDate}',
+              style: TextStyle(
+                fontFamily: 'JetBrains Mono',
+                fontSize: 12.5,
+                color: AppColors.bone45,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(width: 20),
+        _chevron(),
       ],
     );
   }
 
-  Widget _buildTechnologies(BuildContext context, experience) {
-    return Column(
+  Widget _mobileSummary(Experience e) {
+    return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Technologies Used:',
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.w600,
-            color: AppColors.textPrimary,
+        Padding(padding: const EdgeInsets.only(top: 4), child: _node()),
+        const SizedBox(width: 14),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                e.position,
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w600,
+                  color: _open ? AppColors.copper : AppColors.bone,
+                ),
+              ),
+              Text(
+                e.company,
+                style: TextStyle(fontSize: 14, color: AppColors.bone45),
+              ),
+              const SizedBox(height: 6),
+              Wrap(
+                spacing: 8,
+                runSpacing: 6,
+                children: [
+                  if (e.isCurrent)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 3,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.jade.withValues(alpha: 0.12),
+                        borderRadius: BorderRadius.circular(999),
+                      ),
+                      child: Text(
+                        'CURRENT',
+                        style: TextStyle(
+                          fontFamily: 'JetBrains Mono',
+                          fontSize: 10,
+                          color: AppColors.jade,
+                        ),
+                      ),
+                    ),
+                  Text(
+                    '${e.startDate} — ${e.endDate}',
+                    style: TextStyle(
+                      fontFamily: 'JetBrains Mono',
+                      fontSize: 11.5,
+                      color: AppColors.bone45,
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
-        const SizedBox(height: 8),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: experience.technologies
-              .map<Widget>(
-                (tech) => Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.surfaceColor,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: AppColors.primaryBlue.withValues(alpha: 0.3),
-                    ),
-                  ),
-                  child: Text(
-                    tech,
-                    style: const TextStyle(
-                      color: AppColors.textSecondary,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              )
-              .toList(),
-        ),
+        _chevron(),
       ],
+    );
+  }
+
+  Widget _node() {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      width: 8,
+      height: 8,
+      decoration: BoxDecoration(
+        color: _open ? AppColors.copper : Colors.transparent,
+        border: Border.all(
+          color: _open
+              ? AppColors.copper
+              : AppColors.bone.withValues(alpha: 0.3),
+        ),
+      ),
+      transform: Matrix4.rotationZ(0.785398),
+    );
+  }
+
+  Widget _chevron() {
+    return AnimatedRotation(
+      duration: const Duration(milliseconds: 280),
+      turns: _open ? 0.25 : 0,
+      child: Icon(
+        Icons.chevron_right,
+        size: 20,
+        color: _open ? AppColors.copper : AppColors.bone38,
+      ),
     );
   }
 }

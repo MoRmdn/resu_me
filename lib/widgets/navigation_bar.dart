@@ -1,9 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import '../utils/app_colors.dart';
 import '../utils/constants.dart';
 import '../utils/responsive_helper.dart';
-import '../services/url_launcher_service.dart';
+import 'mo_rmdn_logo.dart';
 
 class PortfolioNavigationBar extends StatelessWidget {
   final int currentSection;
@@ -15,143 +17,84 @@ class PortfolioNavigationBar extends StatelessWidget {
     required this.onSectionChanged,
   });
 
+  static const _links = [
+    ('About', 1),
+    ('Experience', 2),
+    ('Projects', 3),
+    ('Skills', 4),
+    // ('System', 6),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: ResponsiveHelper.getResponsivePadding(context),
-      decoration: BoxDecoration(
-        color: AppColors.cardBackground.withValues(alpha: 0.95),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-        children: [
-          Expanded(
-            child: Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              crossAxisAlignment: WrapCrossAlignment.start,
-              alignment: WrapAlignment.start,
-              children: [
-                // Logo/Name
-                Text(
-                  AppConstants.developerName,
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryBlue,
-                  ),
-                ),
-
-                // Navigation Items (Desktop/Tablet)
-                if (!ResponsiveHelper.isMobile(context))
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _buildNavItem(context, 'Home', 0),
-                      _buildNavItem(context, 'About', 1),
-                      _buildNavItem(context, 'Experience', 2),
-                      _buildNavItem(context, 'Projects', 3),
-                      _buildNavItem(context, 'Skills', 4),
-                      _buildNavItem(context, 'Contact', 5),
-                    ],
-                  ),
-
-                // Social Links
-              ],
-            ),
-          ),
-
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildSocialIcon(
-                context,
-                FontAwesomeIcons.github,
-                AppConstants.gitHubUrl,
-              ),
-              const SizedBox(width: 12),
-              _buildSocialIcon(
-                context,
-                FontAwesomeIcons.linkedin,
-                AppConstants.linkedInUrl,
-              ),
-              const SizedBox(width: 12),
-              _buildSocialIcon(
-                context,
-                FontAwesomeIcons.whatsapp,
-                AppConstants.whatsappUrl,
-              ),
-            ],
-          ),
-          if (ResponsiveHelper.isMobile(context)) ...[
-            const SizedBox(width: 12),
-            _buildMobileMenuButton(context),
-          ],
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNavItem(BuildContext context, String title, int index) {
-    final isActive = currentSection == index;
+    final isMobile = ResponsiveHelper.isMobile(context);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: InkWell(
-        onTap: () => onSectionChanged(index),
-        borderRadius: BorderRadius.circular(8),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: Text(
-            title,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: isActive ? AppColors.primaryBlue : AppColors.textSecondary,
-              fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: isMobile
+                  ? double.infinity
+                  : AppConstants.maxContentWidth,
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(999),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                child: Container(
+                  height: 58,
+                  padding: EdgeInsets.only(left: 20, right: isMobile ? 8 : 10),
+                  decoration: BoxDecoration(
+                    color: AppColors.ink700.withValues(alpha: 0.72),
+                    borderRadius: BorderRadius.circular(999),
+                    border: Border.all(color: AppColors.line),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.5),
+                        blurRadius: 50,
+                        offset: const Offset(0, 18),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      InkWell(
+                        onTap: () => onSectionChanged(0),
+                        child: const MoRmdnLockup(),
+                      ),
+                      if (!isMobile) ...[
+                        const SizedBox(width: 28),
+                        for (final link in _links)
+                          _NavLink(
+                            label: link.$1,
+                            active: currentSection == link.$2,
+                            onTap: () => onSectionChanged(link.$2),
+                          ),
+                        const SizedBox(width: 8),
+                      ] else
+                        const SizedBox(width: 12),
+                      if (isMobile)
+                        IconButton(
+                          onPressed: () => _showMobileMenu(context),
+                          icon: Icon(
+                            Icons.menu,
+                            color: AppColors.bone,
+                            size: 20,
+                          ),
+                        )
+                      else
+                        _HireMeButton(onTap: () => onSectionChanged(5)),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSocialIcon(BuildContext context, IconData icon, String url) {
-    return InkWell(
-      onTap: () {
-        UrlLauncherService.openUrl(url);
-      },
-      borderRadius: BorderRadius.circular(20),
-      child: Container(
-        width: 40,
-        height: 40,
-        decoration: BoxDecoration(
-          color: AppColors.surfaceColor,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Icon(icon, size: 18, color: AppColors.textSecondary),
-      ),
-    );
-  }
-
-  Widget _buildMobileMenuButton(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        _showMobileMenu(context);
-      },
-      borderRadius: BorderRadius.circular(8),
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        child: Icon(Icons.menu, color: AppColors.textSecondary),
+        ],
       ),
     );
   }
@@ -159,115 +102,159 @@ class PortfolioNavigationBar extends StatelessWidget {
   void _showMobileMenu(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.cardBackground,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      backgroundColor: AppColors.ink700,
+      shape: RoundedRectangleBorder(
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+        side: BorderSide(color: AppColors.line),
       ),
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: AppColors.textMuted,
-                borderRadius: BorderRadius.circular(2),
+      builder: (context) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 8),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 36,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: AppColors.bone28,
+                  borderRadius: BorderRadius.circular(2),
+                ),
               ),
-            ),
-            const SizedBox(height: 24),
-            _buildMobileNavItem(context, 'Home', 0),
-            _buildMobileNavItem(context, 'About', 1),
-            _buildMobileNavItem(context, 'Experience', 2),
-            _buildMobileNavItem(context, 'Projects', 3),
-            _buildMobileNavItem(context, 'Skills', 4),
-            _buildMobileNavItem(context, 'Contact', 5),
-            const SizedBox(height: 24),
-            // Social Links in Mobile Menu
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildMobileSocialIcon(
-                  context,
-                  FontAwesomeIcons.github,
-                  AppConstants.gitHubUrl,
+              const SizedBox(height: 20),
+              ..._links.map(
+                (link) => _MobileNavItem(
+                  label: link.$1,
+                  active: currentSection == link.$2,
+                  onTap: () {
+                    Navigator.pop(context);
+                    onSectionChanged(link.$2);
+                  },
                 ),
-                _buildMobileSocialIcon(
-                  context,
-                  FontAwesomeIcons.linkedin,
-                  AppConstants.linkedInUrl,
-                ),
-                _buildMobileSocialIcon(
-                  context,
-                  FontAwesomeIcons.whatsapp,
-                  AppConstants.whatsappUrl,
-                ),
-                _buildMobileSocialIcon(
-                  context,
-                  FontAwesomeIcons.briefcase,
-                  AppConstants.freelancerUrl,
-                ),
-                _buildMobileSocialIcon(
-                  context,
-                  FontAwesomeIcons.userTie,
-                  AppConstants.upworkUrl,
-                ),
-                _buildMobileSocialIcon(
-                  context,
-                  FontAwesomeIcons.handshake,
-                  AppConstants.fiverrUrl,
-                ),
-              ],
-            ),
-          ],
+              ),
+              _MobileNavItem(
+                label: 'Contact',
+                active: currentSection == 5,
+                onTap: () {
+                  Navigator.pop(context);
+                  onSectionChanged(5);
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
+}
 
-  Widget _buildMobileNavItem(BuildContext context, String title, int index) {
-    final isActive = currentSection == index;
+class _NavLink extends StatefulWidget {
+  final String label;
+  final bool active;
+  final VoidCallback onTap;
 
+  const _NavLink({
+    required this.label,
+    required this.active,
+    required this.onTap,
+  });
+
+  @override
+  State<_NavLink> createState() => _NavLinkState();
+}
+
+class _NavLinkState extends State<_NavLink> {
+  bool _hover = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = widget.active || _hover ? AppColors.bone : AppColors.bone62;
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      onEnter: (_) => setState(() => _hover = true),
+      onExit: (_) => setState(() => _hover = false),
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 11),
+          child: Text(
+            widget.label,
+            style: TextStyle(fontSize: 13.5, color: color),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _MobileNavItem extends StatelessWidget {
+  final String label;
+  final bool active;
+  final VoidCallback onTap;
+
+  const _MobileNavItem({
+    required this.label,
+    required this.active,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Navigator.pop(context);
-        onSectionChanged(index);
-      },
+      onTap: onTap,
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 16),
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
         child: Text(
-          title,
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: isActive ? AppColors.primaryBlue : AppColors.textPrimary,
-            fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
+          label,
+          style: TextStyle(
+            fontSize: 17,
+            fontWeight: active ? FontWeight.w600 : FontWeight.w400,
+            color: active ? AppColors.copper : AppColors.bone,
           ),
-          textAlign: TextAlign.center,
         ),
       ),
     );
   }
+}
 
-  Widget _buildMobileSocialIcon(
-    BuildContext context,
-    IconData icon,
-    String url,
-  ) {
-    return InkWell(
-      onTap: () {
-        Navigator.pop(context);
-        UrlLauncherService.openUrl(url);
-      },
-      borderRadius: BorderRadius.circular(20),
-      child: Container(
-        width: 50,
-        height: 50,
-        decoration: BoxDecoration(
-          color: AppColors.surfaceColor,
-          borderRadius: BorderRadius.circular(25),
+class _HireMeButton extends StatefulWidget {
+  final VoidCallback onTap;
+  const _HireMeButton({required this.onTap});
+
+  @override
+  State<_HireMeButton> createState() => _HireMeButtonState();
+}
+
+class _HireMeButtonState extends State<_HireMeButton> {
+  bool _hover = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      onEnter: (_) => setState(() => _hover = true),
+      onExit: (_) => setState(() => _hover = false),
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 160),
+          height: 40,
+          padding: const EdgeInsets.symmetric(horizontal: 18),
+          decoration: BoxDecoration(
+            color: _hover ? AppColors.copperBright : AppColors.copper,
+            borderRadius: BorderRadius.circular(999),
+          ),
+          alignment: Alignment.center,
+          child: const Text(
+            'Hire me',
+            style: TextStyle(
+              color: AppColors.ink900,
+              fontSize: 13.5,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ),
-        child: Icon(icon, size: 20, color: AppColors.textSecondary),
       ),
     );
   }

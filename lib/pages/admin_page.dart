@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import '../utils/app_colors.dart';
+import 'package:flutter/material.dart';
+
 import '../services/realtime_database_service.dart';
+import '../utils/app_colors.dart';
 
 class AdminPage extends StatelessWidget {
   const AdminPage({super.key});
@@ -37,7 +38,7 @@ class AdminPage extends StatelessWidget {
                   const SizedBox(height: 16),
                   Text(
                     'Error loading submissions: ${snapshot.error}',
-                    style: const TextStyle(color: AppColors.textPrimary),
+                    style: TextStyle(color: AppColors.textPrimary),
                     textAlign: TextAlign.center,
                   ),
                 ],
@@ -46,7 +47,7 @@ class AdminPage extends StatelessWidget {
           }
 
           if (!snapshot.hasData || snapshot.data!.snapshot.value == null) {
-            return const Center(
+            return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -80,7 +81,7 @@ class AdminPage extends StatelessWidget {
               final entry = submissions[index];
               final submissionId = entry.key;
               final submissionData = entry.value as Map<dynamic, dynamic>;
-              
+
               return Card(
                 margin: const EdgeInsets.only(bottom: 16),
                 color: AppColors.cardBackground,
@@ -94,7 +95,7 @@ class AdminPage extends StatelessWidget {
                         children: [
                           Text(
                             submissionData['name'] ?? 'Unknown',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                               color: AppColors.textPrimary,
@@ -108,7 +109,9 @@ class AdminPage extends StatelessWidget {
                                   vertical: 4,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: _getStatusColor(submissionData['status'] ?? 'new'),
+                                  color: _getStatusColor(
+                                    submissionData['status'] ?? 'new',
+                                  ),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Text(
@@ -122,8 +125,12 @@ class AdminPage extends StatelessWidget {
                               ),
                               const SizedBox(width: 8),
                               IconButton(
-                                onPressed: () => _showDeleteDialog(context, submissionId),
-                                icon: const Icon(Icons.delete, color: Colors.red),
+                                onPressed: () =>
+                                    _showDeleteDialog(context, submissionId),
+                                icon: const Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
                                 tooltip: 'Delete submission',
                               ),
                             ],
@@ -133,17 +140,19 @@ class AdminPage extends StatelessWidget {
                       const SizedBox(height: 8),
                       Text(
                         submissionData['email'] ?? '',
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: AppColors.textSecondary,
                           fontSize: 14,
                         ),
                       ),
                       if (submissionData['projectType'] != null &&
-                          submissionData['projectType'].toString().isNotEmpty) ...[
+                          submissionData['projectType']
+                              .toString()
+                              .isNotEmpty) ...[
                         const SizedBox(height: 4),
                         Text(
                           'Project: ${submissionData['projectType']}',
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: AppColors.textSecondary,
                             fontSize: 14,
                           ),
@@ -154,7 +163,7 @@ class AdminPage extends StatelessWidget {
                         const SizedBox(height: 4),
                         Text(
                           'Budget: ${submissionData['budget']}',
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: AppColors.textSecondary,
                             fontSize: 14,
                           ),
@@ -163,7 +172,7 @@ class AdminPage extends StatelessWidget {
                       const SizedBox(height: 12),
                       Text(
                         submissionData['message'] ?? '',
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: AppColors.textPrimary,
                           fontSize: 14,
                         ),
@@ -174,7 +183,7 @@ class AdminPage extends StatelessWidget {
                         children: [
                           Text(
                             _formatTimestamp(submissionData['timestamp']),
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: AppColors.textMuted,
                               fontSize: 12,
                             ),
@@ -183,14 +192,20 @@ class AdminPage extends StatelessWidget {
                             children: [
                               if (submissionData['status'] == 'new')
                                 TextButton(
-                                  onPressed: () =>
-                                      _updateStatus(context, submissionId, 'read'),
+                                  onPressed: () => _updateStatus(
+                                    context,
+                                    submissionId,
+                                    'read',
+                                  ),
                                   child: const Text('Mark as Read'),
                                 ),
                               if (submissionData['status'] == 'read')
                                 TextButton(
-                                  onPressed: () =>
-                                      _updateStatus(context, submissionId, 'replied'),
+                                  onPressed: () => _updateStatus(
+                                    context,
+                                    submissionId,
+                                    'replied',
+                                  ),
                                   child: const Text('Mark as Replied'),
                                 ),
                             ],
@@ -223,18 +238,22 @@ class AdminPage extends StatelessWidget {
 
   String _formatTimestamp(dynamic timestamp) {
     if (timestamp == null) return 'Unknown date';
-    
+
     DateTime dateTime;
     if (timestamp is int) {
       dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
     } else {
       return 'Invalid date';
     }
-    
+
     return '${dateTime.day}/${dateTime.month}/${dateTime.year} ${dateTime.hour}:${dateTime.minute.toString().padLeft(2, '0')}';
   }
 
-  void _updateStatus(BuildContext context, String submissionId, String status) async {
+  void _updateStatus(
+    BuildContext context,
+    String submissionId,
+    String status,
+  ) async {
     try {
       await RealtimeDatabaseService.updateContactStatus(submissionId, status);
       if (context.mounted) {
@@ -262,11 +281,11 @@ class AdminPage extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: AppColors.cardBackground,
-        title: const Text(
+        title: Text(
           'Delete Submission',
           style: TextStyle(color: AppColors.textPrimary),
         ),
-        content: const Text(
+        content: Text(
           'Are you sure you want to delete this contact submission?',
           style: TextStyle(color: AppColors.textSecondary),
         ),
@@ -279,7 +298,9 @@ class AdminPage extends StatelessWidget {
             onPressed: () async {
               Navigator.pop(context);
               try {
-                await RealtimeDatabaseService.deleteContactSubmission(submissionId);
+                await RealtimeDatabaseService.deleteContactSubmission(
+                  submissionId,
+                );
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
@@ -299,10 +320,7 @@ class AdminPage extends StatelessWidget {
                 }
               }
             },
-            child: const Text(
-              'Delete',
-              style: TextStyle(color: Colors.red),
-            ),
+            child: const Text('Delete', style: TextStyle(color: Colors.red)),
           ),
         ],
       ),

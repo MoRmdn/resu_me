@@ -1,456 +1,519 @@
 import 'dart:async' show StreamSubscription;
 
-import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
+
+import '../services/realtime_database_service.dart';
+import '../services/url_launcher_service.dart';
 import '../utils/app_colors.dart';
 import '../utils/constants.dart';
 import '../utils/responsive_helper.dart';
-import '../services/url_launcher_service.dart';
-import '../services/realtime_database_service.dart';
+import 'cursor_glow.dart';
+import 'mo_rmdn_logo.dart';
 
 class HeroSection extends StatefulWidget {
-  const HeroSection({super.key});
+  final VoidCallback? onSeeWork;
+
+  const HeroSection({super.key, this.onSeeWork});
 
   @override
   State<HeroSection> createState() => _HeroSectionState();
 }
 
-class _HeroSectionState extends State<HeroSection>
-    with TickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _fadeAnimation;
-  late Animation<Offset> _slideAnimation;
+class _HeroSectionState extends State<HeroSection> {
   int _totalViews = 0;
   StreamSubscription<DatabaseEvent>? _viewsSubscription;
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
-      duration: const Duration(milliseconds: 1500),
-      vsync: this,
-    );
-
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
-    );
-
-    _slideAnimation =
-        Tween<Offset>(begin: const Offset(0, 0.3), end: Offset.zero).animate(
-          CurvedAnimation(
-            parent: _animationController,
-            curve: Curves.easeOutCubic,
-          ),
-        );
-
-    _animationController.forward();
     _setupViewsListener();
   }
 
   void _setupViewsListener() {
-    debugPrint('🎯 Setting up real-time views listener...');
-
-    // Listen to real-time updates from Firebase
     _viewsSubscription = RealtimeDatabaseService.getViewsStream().listen(
-      (DatabaseEvent event) {
-        if (event.snapshot.exists) {
-          final viewsCount = event.snapshot.value as int;
-          debugPrint('📊 Real-time views update: $viewsCount');
-          if (mounted) {
-            setState(() {
-              _totalViews = viewsCount;
-            });
-            debugPrint('✅ Views count updated in UI: $_totalViews');
-          }
-        } else {
-          debugPrint('📊 No views data found in real-time stream');
+      (event) {
+        if (event.snapshot.exists && mounted) {
+          setState(() => _totalViews = event.snapshot.value as int);
         }
       },
-      onError: (error) {
-        debugPrint('❌ Error in views stream: $error');
-        // Fallback to one-time fetch if stream fails
-        _loadViewsCountFallback();
+      onError: (_) async {
+        final count = await RealtimeDatabaseService.getTotalViews();
+        if (mounted) setState(() => _totalViews = count);
       },
     );
   }
 
-  void _loadViewsCountFallback() async {
-    try {
-      debugPrint('🔄 Fallback: Loading views count...');
-      final viewsCount = await RealtimeDatabaseService.getTotalViews();
-      debugPrint('📊 Fallback views count received: $viewsCount');
-      if (mounted) {
-        setState(() {
-          _totalViews = viewsCount;
-        });
-        debugPrint('✅ Fallback views count updated in UI: $_totalViews');
-      }
-    } catch (e) {
-      debugPrint('❌ Error in fallback views loading: $e');
-    }
-  }
-
   @override
   void dispose() {
-    _animationController.dispose();
     _viewsSubscription?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = ResponsiveHelper.isMobile(context);
+    final isTablet = !isMobile && ResponsiveHelper.isTablet(context);
+    final stacked = isMobile || isTablet;
+
     return Container(
-      height: MediaQuery.of(context).size.height,
-      decoration: const BoxDecoration(gradient: AppColors.heroGradient),
-      child: Stack(
-        children: [
-          // Animated Background
-          _buildAnimatedBackground(),
+      color: AppColors.ink900,
+      child: CursorGlow(
+        child: Stack(
+          children: [
+            Positioned(
+              right: -40,
+              top: 120,
+              child: IgnorePointer(
+                child: MoRmdnMark(
+                  size: 560,
+                  boneColor: AppColors.bone.withValues(alpha: 0.055),
+                  copperColor: AppColors.bone.withValues(alpha: 0.055),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(
+                isMobile ? 20 : 32,
+                isMobile ? 132 : 188,
+                isMobile ? 20 : 32,
+                isMobile ? 76 : 96,
+              ),
+              child: Center(
+                heightFactor: 1,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    maxWidth: AppConstants.maxContentWidth,
+                  ),
+                  child: stacked
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildLeft(context, isMobile, widget.onSeeWork),
+                            const SizedBox(height: 40),
+                            _buildTrackRecordCard(),
+                          ],
+                        )
+                      : IntrinsicHeight(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Expanded(
+                                flex: 155,
+                                child: _buildLeft(
+                                  context,
+                                  isMobile,
+                                  widget.onSeeWork,
+                                ),
+                              ),
+                              const SizedBox(width: 64),
+                              Expanded(
+                                flex: 100,
+                                child: _buildTrackRecordCard(),
+                              ),
+                            ],
+                          ),
+                        ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
-          // Main Content
-          Center(
-            child: FadeTransition(
-              opacity: _fadeAnimation,
-              child: SlideTransition(
-                position: _slideAnimation,
-                child: Padding(
-                  padding: ResponsiveHelper.getResponsivePadding(context),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Profile Image Placeholder
-                      _buildProfileImage(),
-
-                      const SizedBox(height: 32),
-
-                      // Name and Title
-                      _buildNameAndTitle(),
-
-                      const SizedBox(height: 24),
-
-                      // Animated Subtitle
-                      _buildAnimatedSubtitle(),
-
-                      const SizedBox(height: 16),
-
-                      // Location
-                      _buildLocation(),
-
-                      const SizedBox(height: 16),
-
-                      // Views Counter
-                      _buildViewsCounter(),
-
-                      const SizedBox(height: 40),
-
-                      // Call to Action Buttons
-                      _buildCallToActionButtons(),
-
-                      const SizedBox(height: 40),
-
-                      // Scroll Indicator
-                      _buildScrollIndicator(),
-                    ],
+  Widget _buildLeft(
+    BuildContext context,
+    bool isMobile,
+    VoidCallback? onSeeWork,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
+          spacing: 14,
+          runSpacing: 8,
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _PulseDot(color: AppColors.jade),
+                const SizedBox(width: 7),
+                Text(
+                  'Open to work',
+                  style: TextStyle(
+                    fontFamily: 'JetBrains Mono',
+                    fontSize: 11,
+                    letterSpacing: 2.2,
+                    color: AppColors.jade,
                   ),
                 ),
+              ],
+            ),
+            Container(width: 26, height: 1, color: AppColors.bone18),
+            Text(
+              '${AppConstants.developerLocation} · UTC+3',
+              style: TextStyle(
+                fontFamily: 'JetBrains Mono',
+                fontSize: 11,
+                letterSpacing: 2.2,
+                color: AppColors.bone45,
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAnimatedBackground() {
-    return Positioned.fill(
-      child: CustomPaint(painter: AnimatedBackgroundPainter()),
-    );
-  }
-
-  Widget _buildProfileImage() {
-    return Container(
-      width: ResponsiveHelper.isMobile(context) ? 120 : 150,
-      height: ResponsiveHelper.isMobile(context) ? 120 : 150,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        gradient: AppColors.primaryGradient,
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primaryBlue.withValues(alpha: 0.3),
-            blurRadius: 20,
-            spreadRadius: 5,
-          ),
-        ],
-      ),
-      child: const Icon(Icons.person, size: 60, color: AppColors.textPrimary),
-    );
-  }
-
-  Widget _buildNameAndTitle() {
-    return Column(
-      children: [
-        Text(
-          AppConstants.developerName,
-          style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
-            fontSize: ResponsiveHelper.getResponsiveFontSize(
-              context,
-              mobile: 32,
-              tablet: 40,
-              desktop: 48,
-            ),
-          ),
-          textAlign: TextAlign.center,
+          ],
         ),
-        const SizedBox(height: 8),
-        Text(
-          AppConstants.developerTitle,
-          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-            color: AppColors.primaryBlue,
-            fontWeight: FontWeight.w600,
-            fontSize: ResponsiveHelper.getResponsiveFontSize(
-              context,
-              mobile: 20,
-              tablet: 24,
-              desktop: 28,
+        SizedBox(height: isMobile ? 20 : 26),
+        Text.rich(
+          TextSpan(
+            style: TextStyle(
+              fontSize: isMobile ? 46 : 84,
+              height: 0.92,
+              fontWeight: FontWeight.w600,
+              letterSpacing: -2.4,
+              color: AppColors.bone,
+            ),
+            children: [
+              const TextSpan(text: 'Flutter apps\nthat actually\n'),
+              TextSpan(
+                text: 'ship.',
+                style: TextStyle(color: AppColors.copper),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: isMobile ? 22 : 34),
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 620),
+          child: Text.rich(
+            TextSpan(
+              style: TextStyle(
+                fontSize: 18,
+                height: 1.6,
+                color: AppColors.bone70,
+              ),
+              children: [
+                const TextSpan(text: "I'm "),
+                TextSpan(
+                  text: 'Mohamed Ramadan',
+                  style: TextStyle(
+                    color: AppColors.bone,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const TextSpan(
+                  text:
+                      ' — a mobile developer with four years spent building cross-platform products for teams in six countries. Bloc, GetX, Cubit, clean architecture, and a stubborn preference for 60fps.',
+                ),
+              ],
             ),
           ),
-          textAlign: TextAlign.center,
+        ),
+        SizedBox(height: isMobile ? 26 : 38),
+        Wrap(
+          spacing: 12,
+          runSpacing: 12,
+          children: [
+            _PrimaryCta(label: 'See the work', onTap: onSeeWork ?? () {}),
+            _GhostCta(
+              label: AppConstants.developerEmail,
+              onTap: () =>
+                  UrlLauncherService.launchEmail(AppConstants.developerEmail),
+            ),
+          ],
         ),
       ],
     );
   }
 
-  Widget _buildAnimatedSubtitle() {
-    return SizedBox(
-      height: 60,
-      child: AnimatedTextKit(
-        animatedTexts: [
-          TypewriterAnimatedText(
-            AppConstants.developerSubtitle,
-            textStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: AppColors.textSecondary,
-              fontSize: ResponsiveHelper.getResponsiveFontSize(
-                context,
-                mobile: 16,
-                tablet: 18,
-                desktop: 20,
-              ),
-            ),
-            speed: const Duration(milliseconds: 100),
-          ),
-          TypewriterAnimatedText(
-            '${AppConstants.experienceText} | ${AppConstants.appsText}',
-            textStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: AppColors.accentCyan,
-              fontSize: ResponsiveHelper.getResponsiveFontSize(
-                context,
-                mobile: 16,
-                tablet: 18,
-                desktop: 20,
-              ),
-            ),
-            speed: const Duration(milliseconds: 100),
-          ),
-        ],
-        repeatForever: true,
-        pause: const Duration(milliseconds: 2000),
-      ),
-    );
-  }
-
-  Widget _buildLocation() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Icon(Icons.location_on, color: AppColors.accentGreen, size: 20),
-        const SizedBox(width: 8),
-        Text(
-          AppConstants.developerLocation,
-          style: Theme.of(
-            context,
-          ).textTheme.bodyMedium?.copyWith(color: AppColors.textMuted),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildViewsCounter() {
+  Widget _buildTrackRecordCard() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.all(26),
       decoration: BoxDecoration(
-        color: AppColors.cardBackground.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: AppColors.primaryBlue.withValues(alpha: 0.3),
-          width: 1,
-        ),
+        color: AppColors.ink700,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.line),
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.visibility, color: AppColors.accentCyan, size: 16),
-          const SizedBox(width: 8),
           Text(
-            '${_formatViewsCount(_totalViews)} views',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.textSecondary,
-              fontWeight: FontWeight.w500,
+            'Track record',
+            style: TextStyle(
+              fontFamily: 'JetBrains Mono',
+              fontSize: 11,
+              letterSpacing: 2.2,
+              color: AppColors.bone45,
             ),
           ),
-          const SizedBox(width: 8),
-          // Debug refresh button (only in debug mode)
-          if (kDebugMode)
-            GestureDetector(
-              onTap: () {
-                debugPrint('🔄 Manual refresh triggered');
-                _loadViewsCountFallback();
-              },
-              child: Container(
-                padding: const EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  color: AppColors.primaryBlue.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: const Icon(
-                  Icons.refresh,
-                  color: AppColors.accentCyan,
-                  size: 12,
-                ),
-              ),
+          const SizedBox(height: 22),
+          _Metric(
+            value: AppConstants.yearsExperience,
+            suffix: ' +',
+            label: 'Years shipping Flutter',
+            copper: true,
+          ),
+          Container(
+            height: 1,
+            color: AppColors.line,
+            margin: const EdgeInsets.symmetric(vertical: 20),
+          ),
+          _Metric(
+            value: AppConstants.appsLiveBothStores,
+            label: 'Apps live on both stores',
+          ),
+          Container(
+            height: 1,
+            color: AppColors.line,
+            margin: const EdgeInsets.symmetric(vertical: 20),
+          ),
+          _Metric(
+            value: AppConstants.teamsCount,
+            label: 'Teams across ${AppConstants.countriesText}',
+          ),
+          if (_totalViews > 0) ...[
+            Container(
+              height: 1,
+              color: AppColors.line,
+              margin: const EdgeInsets.symmetric(vertical: 20),
             ),
+            Row(
+              children: [
+                Icon(
+                  Icons.visibility_outlined,
+                  size: 14,
+                  color: AppColors.bone38,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  '$_totalViews page views',
+                  style: TextStyle(
+                    fontFamily: 'JetBrains Mono',
+                    fontSize: 12,
+                    color: AppColors.bone38,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ],
       ),
     );
   }
+}
 
-  String _formatViewsCount(int count) {
-    if (count >= 1000000) {
-      return '${(count / 1000000).toStringAsFixed(1)}M';
-    } else if (count >= 1000) {
-      return '${(count / 1000).toStringAsFixed(1)}K';
-    }
-    return count.toString();
-  }
+class _Metric extends StatefulWidget {
+  final int value;
+  final String suffix;
+  final String label;
+  final bool copper;
 
-  Widget _buildCallToActionButtons() {
-    return ResponsiveHelper.isMobile(context)
-        ? Column(
-            children: [
-              _buildPrimaryButton(),
-              const SizedBox(height: 16),
-              _buildSecondaryButton(),
-            ],
-          )
-        : Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _buildPrimaryButton(),
-              const SizedBox(width: 24),
-              _buildSecondaryButton(),
-            ],
-          );
-  }
+  const _Metric({
+    required this.value,
+    this.suffix = '',
+    required this.label,
+    this.copper = false,
+  });
 
-  Widget _buildPrimaryButton() {
-    return ElevatedButton.icon(
-      onPressed: () {
-        UrlLauncherService.openUrl(AppConstants.gitHubUrl);
-      },
-      icon: const Icon(Icons.work_outline),
-      label: const Text('View My Work'),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primaryBlue,
-        foregroundColor: AppColors.textPrimary,
-        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      ),
+  @override
+  State<_Metric> createState() => _MetricState();
+}
+
+class _MetricState extends State<_Metric> with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 900),
+      vsync: this,
     );
-  }
-
-  Widget _buildSecondaryButton() {
-    return OutlinedButton.icon(
-      onPressed: () {
-        UrlLauncherService.launchEmail(AppConstants.developerEmail);
-      },
-      icon: const Icon(Icons.email_outlined),
-      label: const Text('Contact Me'),
-      style: OutlinedButton.styleFrom(
-        foregroundColor: AppColors.textPrimary,
-        side: const BorderSide(color: AppColors.primaryBlue),
-        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      ),
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOutQuart,
     );
+    _controller.forward();
   }
 
-  Widget _buildScrollIndicator() {
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(
-          Icons.keyboard_arrow_down,
-          color: AppColors.textMuted,
-          size: 24,
+        AnimatedBuilder(
+          animation: _animation,
+          builder: (context, _) => Text(
+            '${(widget.value * _animation.value).round()}${widget.suffix}',
+            style: TextStyle(
+              fontSize: 44,
+              height: 1,
+              fontWeight: FontWeight.w600,
+              letterSpacing: -1.3,
+              color: widget.copper ? AppColors.copper : AppColors.bone,
+              fontFeatures: const [FontFeature.tabularFigures()],
+            ),
+          ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 6),
         Text(
-          'Scroll to explore',
-          style: Theme.of(
-            context,
-          ).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
+          widget.label,
+          style: TextStyle(fontSize: 13, color: AppColors.bone45),
         ),
       ],
     );
   }
 }
 
-class AnimatedBackgroundPainter extends CustomPainter {
+class _PulseDot extends StatefulWidget {
+  final Color color;
+  const _PulseDot({required this.color});
+
   @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = AppColors.primaryBlue.withValues(alpha: 0.1)
-      ..style = PaintingStyle.fill;
+  State<_PulseDot> createState() => _PulseDotState();
+}
 
-    // Draw animated circles
-    final center = Offset(size.width / 2, size.height / 2);
+class _PulseDotState extends State<_PulseDot>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
 
-    // Large background circle
-    canvas.drawCircle(
-      center,
-      size.width * 0.4,
-      paint..color = AppColors.accentCyan.withValues(alpha: 0.05),
-    );
-
-    // Medium circles
-    canvas.drawCircle(
-      Offset(size.width * 0.2, size.height * 0.3),
-      size.width * 0.15,
-      paint..color = AppColors.primaryBlue.withValues(alpha: 0.08),
-    );
-
-    canvas.drawCircle(
-      Offset(size.width * 0.8, size.height * 0.7),
-      size.width * 0.12,
-      paint..color = AppColors.accentPurple.withValues(alpha: 0.06),
-    );
-
-    // Small circles
-    canvas.drawCircle(
-      Offset(size.width * 0.1, size.height * 0.8),
-      size.width * 0.08,
-      paint..color = AppColors.accentGreen.withValues(alpha: 0.1),
-    );
-
-    canvas.drawCircle(
-      Offset(size.width * 0.9, size.height * 0.2),
-      size.width * 0.06,
-      paint..color = AppColors.primaryBlue.withValues(alpha: 0.1),
-    );
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2400),
+    )..repeat(reverse: true);
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: Tween<double>(begin: 1, end: 0.35).animate(_controller),
+      child: Container(
+        width: 6,
+        height: 6,
+        decoration: BoxDecoration(color: widget.color, shape: BoxShape.circle),
+      ),
+    );
+  }
+}
+
+class _PrimaryCta extends StatefulWidget {
+  final String label;
+  final VoidCallback onTap;
+
+  const _PrimaryCta({required this.label, required this.onTap});
+
+  @override
+  State<_PrimaryCta> createState() => _PrimaryCtaState();
+}
+
+class _PrimaryCtaState extends State<_PrimaryCta> {
+  bool _hover = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      onEnter: (_) => setState(() => _hover = true),
+      onExit: (_) => setState(() => _hover = false),
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 180),
+          transform: Matrix4.translationValues(0, _hover ? -2 : 0, 0),
+          height: 50,
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          decoration: BoxDecoration(
+            color: _hover ? AppColors.copperBright : AppColors.copper,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          alignment: Alignment.center,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                widget.label,
+                style: const TextStyle(
+                  color: AppColors.ink900,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(width: 10),
+              const Text(
+                '→',
+                style: TextStyle(color: AppColors.ink900, fontSize: 15),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _GhostCta extends StatefulWidget {
+  final String label;
+  final VoidCallback onTap;
+
+  const _GhostCta({required this.label, required this.onTap});
+
+  @override
+  State<_GhostCta> createState() => _GhostCtaState();
+}
+
+class _GhostCtaState extends State<_GhostCta> {
+  bool _hover = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      onEnter: (_) => setState(() => _hover = true),
+      onExit: (_) => setState(() => _hover = false),
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 180),
+          height: 50,
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          decoration: BoxDecoration(
+            color: _hover ? AppColors.bone06 : Colors.transparent,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: _hover ? AppColors.lineStrong : AppColors.line,
+            ),
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            widget.label,
+            style: const TextStyle(
+              color: AppColors.bone,
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

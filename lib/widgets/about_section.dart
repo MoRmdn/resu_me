@@ -1,339 +1,222 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import '../utils/app_colors.dart';
 import '../utils/constants.dart';
 import '../utils/responsive_helper.dart';
+import 'eyebrow.dart';
 
 class AboutSection extends StatelessWidget {
   const AboutSection({super.key});
 
+  static const _credentials = [
+    'B.Sc. Bioinformatics — Mansoura University, 2021',
+    'Google Flutter Certification — Udemy, 2022',
+    'Android Basics Nanodegree — Udacity, 2020',
+    'Arabic (native) · English (proficient)',
+  ];
+
+  static const _stats = [
+    ('20%', 'Faster data load, Eleven Stars', true),
+    ('25%', 'More bookings, Mutabbib', false),
+    ('15%', 'Retention lift, Arcit-AI', false),
+    ('10%', 'Smaller binary, Cyparta', false),
+  ];
+
   @override
   Widget build(BuildContext context) {
+    final isMobile = ResponsiveHelper.isMobile(context);
+    final stacked = isMobile || ResponsiveHelper.isTablet(context);
+
     return Container(
-      padding: ResponsiveHelper.getResponsivePadding(context),
-      child: Column(
-        children: [
-          // Section Header
-          _buildSectionHeader(context),
-
-          const SizedBox(height: AppConstants.sectionSpacing),
-
-          // About Content
-          _buildAboutContent(context),
-
-          const SizedBox(height: AppConstants.sectionSpacing),
-
-          // Skills Badges
-          _buildSkillsBadges(context),
-
-          const SizedBox(height: AppConstants.sectionSpacing),
-
-          // Statistics
-          _buildStatistics(context),
-        ],
+      color: AppColors.ink900,
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 20 : 32,
+        vertical: isMobile
+            ? AppConstants.sectionPaddingMobile
+            : AppConstants.sectionPaddingDesktop,
       ),
-    );
-  }
-
-  Widget _buildSectionHeader(BuildContext context) {
-    return AnimationConfiguration.staggeredList(
-      position: 0,
-      duration: const Duration(milliseconds: 600),
-      child: SlideAnimation(
-        verticalOffset: 50.0,
-        child: FadeInAnimation(
-          child: Column(
-            children: [
-              Text(
-                'About Me',
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Container(
-                width: 60,
-                height: 4,
-                decoration: BoxDecoration(
-                  gradient: AppColors.primaryGradient,
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-            ],
+      child: Center(
+        heightFactor: 1,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            maxWidth: AppConstants.maxContentWidth,
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAboutContent(BuildContext context) {
-    return AnimationConfiguration.staggeredList(
-      position: 1,
-      duration: const Duration(milliseconds: 600),
-      child: SlideAnimation(
-        verticalOffset: 50.0,
-        child: FadeInAnimation(
-          child: Row(
-            children: [
-              // Profile Image
-              if (!ResponsiveHelper.isMobile(context)) ...[
-                Expanded(flex: 2, child: _buildProfileImage()),
-                const SizedBox(width: 48),
-              ],
-
-              // About Text
-              Expanded(
-                flex: 3,
-                child: Column(
+          child: stacked
+              ? Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Professional Summary',
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.primaryBlue,
-                          ),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'A highly skilled Mobile Developer with over ${AppConstants.yearsExperience} years of experience specializing in cross-platform mobile development with Flutter. Proven expertise in building high-performance, scalable applications for Android and iOS, using state-of-the-art architectures like Bloc, GetX, and Cubit.',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: AppColors.textSecondary,
-                        height: 1.6,
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    Text(
-                      'Strong knowledge in API integrations, state management, and clean code practices. Passionate about continuous learning and delivering top-quality software solutions that drive business growth and user satisfaction.',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: AppColors.textSecondary,
-                        height: 1.6,
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    _buildSpecializations(context),
+                    _buildLeft(),
+                    const SizedBox(height: 44),
+                    _buildRight(context),
+                  ],
+                )
+              : Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(flex: 4, child: _buildLeft()),
+                    const SizedBox(width: 64),
+                    Expanded(flex: 7, child: _buildRight(context)),
                   ],
                 ),
-              ),
-            ],
-          ),
         ),
       ),
     );
   }
 
-  Widget _buildProfileImage() {
-    return Container(
-      height: 300,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        gradient: AppColors.cardGradient,
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primaryBlue.withValues(alpha: 0.2),
-            blurRadius: 20,
-            spreadRadius: 5,
-          ),
-        ],
-      ),
-      child: const Center(
-        child: Icon(Icons.person, size: 80, color: AppColors.textPrimary),
-      ),
-    );
-  }
-
-  Widget _buildSpecializations(BuildContext context) {
+  Widget _buildLeft() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
+        const Eyebrow('01 / About'),
+        const SizedBox(height: 18),
         Text(
-          'Key Specializations:',
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+          'Bioinformatics\ndegree, mobile\nobsession.',
+          style: TextStyle(
+            fontSize: 40,
+            height: 1.0,
             fontWeight: FontWeight.w600,
-            color: AppColors.textPrimary,
+            letterSpacing: -1.4,
+            color: AppColors.bone,
           ),
         ),
-        const SizedBox(height: 12),
-        Wrap(
-          spacing: 12,
-          runSpacing: 8,
-          children: [
-            _buildSpecializationChip('Flutter Development'),
-            _buildSpecializationChip('State Management'),
-            _buildSpecializationChip('API Integration'),
-            _buildSpecializationChip('Clean Architecture'),
-            _buildSpecializationChip('Performance Optimization'),
-            _buildSpecializationChip('Cross-platform Apps'),
-          ],
+        const SizedBox(height: 28),
+        Container(
+          padding: const EdgeInsets.only(top: 22),
+          decoration: BoxDecoration(
+            border: Border(top: BorderSide(color: AppColors.line)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              for (final c in _credentials)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 4),
+                  child: Text(
+                    c,
+                    style: TextStyle(
+                      fontFamily: 'JetBrains Mono',
+                      fontSize: 12.5,
+                      height: 2,
+                      color: AppColors.bone45,
+                    ),
+                  ),
+                ),
+            ],
+          ),
         ),
       ],
     );
   }
 
-  Widget _buildSpecializationChip(String text) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        color: AppColors.surfaceColor,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.primaryBlue.withValues(alpha: 0.3)),
-      ),
-      child: Text(
-        text,
-        style: const TextStyle(
-          color: AppColors.textSecondary,
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
+  Widget _buildRight(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          'I build cross-platform apps that behave like native ones — fast to open, smooth under the thumb, and honest about state.',
+          style: TextStyle(
+            fontSize: 19,
+            height: 1.65,
+            color: AppColors.bone.withValues(alpha: 0.82),
+          ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildSkillsBadges(BuildContext context) {
-    return AnimationConfiguration.staggeredList(
-      position: 2,
-      duration: const Duration(milliseconds: 600),
-      child: SlideAnimation(
-        verticalOffset: 50.0,
-        child: FadeInAnimation(
-          child: Column(
+        const SizedBox(height: 22),
+        Text.rich(
+          TextSpan(
+            style: TextStyle(
+              fontSize: 15.5,
+              height: 1.7,
+              color: AppColors.bone62,
+            ),
             children: [
-              Text(
-                'Core Technologies',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textPrimary,
+              const TextSpan(
+                text:
+                    "My final-year project was mobile data analysis and visualisation; that's where the habit started. Since then I've led products from an empty ",
+              ),
+              TextSpan(
+                text: 'main.dart',
+                style: TextStyle(
+                  fontFamily: 'JetBrains Mono',
+                  color: AppColors.bone,
                 ),
               ),
-              const SizedBox(height: 24),
-              Wrap(
-                spacing: 16,
-                runSpacing: 16,
-                children: [
-                  _buildTechBadge('Dart', AppColors.primaryBlue),
-                  _buildTechBadge('Flutter', AppColors.accentCyan),
-                  _buildTechBadge('Bloc', AppColors.accentPurple),
-                  _buildTechBadge('GetX', AppColors.accentGreen),
-                  _buildTechBadge('Cubit', AppColors.warning),
-                  _buildTechBadge('Firebase', AppColors.error),
-                ],
+              const TextSpan(
+                text:
+                    ' to the App Store: a driving-school platform in Morocco, a medical social network in Libya, an AI matchmaking product in Saudi Arabia, a multi-vendor marketplace in Türkiye. Different domains, same discipline — Bloc or Cubit for anything with real business logic, clean architecture so the next developer isn\'t cursing my name, and unit and widget tests where they earn their keep.',
               ),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildTechBadge(String tech, Color color) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withValues(alpha: 0.3)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 8,
-            height: 8,
-            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-          ),
-          const SizedBox(width: 8),
-          Text(
-            tech,
-            style: TextStyle(
-              color: color,
-              fontWeight: FontWeight.w600,
-              fontSize: 16,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStatistics(BuildContext context) {
-    return AnimationConfiguration.staggeredList(
-      position: 3,
-      duration: const Duration(milliseconds: 600),
-      child: SlideAnimation(
-        verticalOffset: 50.0,
-        child: FadeInAnimation(
-          child: Container(
-            padding: const EdgeInsets.all(32),
-            decoration: BoxDecoration(
-              gradient: AppColors.cardGradient,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.primaryBlue.withValues(alpha: 0.1),
-                  blurRadius: 20,
-                  spreadRadius: 5,
-                ),
-              ],
-            ),
-            child: ResponsiveHelper.isMobile(context)
-                ? Column(
-                    children: [
-                      _buildStatItem(
-                        '${AppConstants.yearsExperience}+',
-                        'Years Experience',
-                      ),
-                      const SizedBox(height: 24),
-                      _buildStatItem(
-                        '${AppConstants.appsDelivered}+',
-                        'Apps Delivered',
-                      ),
-                      const SizedBox(height: 24),
-                      _buildStatItem('100%', 'Client Satisfaction'),
-                      const SizedBox(height: 24),
-                      _buildStatItem('2', 'Platforms Supported'),
-                    ],
-                  )
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _buildStatItem(
-                        '${AppConstants.yearsExperience}+',
-                        'Years Experience',
-                      ),
-                      _buildStatItem(
-                        '${AppConstants.appsDelivered}+',
-                        'Apps Delivered',
-                      ),
-                      _buildStatItem('100%', 'Client Satisfaction'),
-                      _buildStatItem('2', 'Platforms Supported'),
-                    ],
-                  ),
+        const SizedBox(height: 22),
+        Text(
+          "I like the unglamorous wins: cutting data load times by 20%, shaving 10% off a bundle, upgrading a legacy app to null safety before it became someone's emergency.",
+          style: TextStyle(
+            fontSize: 15.5,
+            height: 1.7,
+            color: AppColors.bone62,
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildStatItem(String value, String label) {
-    return Column(
-      children: [
-        Text(
-          value,
-          style: const TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-            color: AppColors.primaryBlue,
+        const SizedBox(height: 44),
+        Container(
+          decoration: BoxDecoration(
+            color: AppColors.line,
+            border: Border.all(color: AppColors.line),
+            borderRadius: BorderRadius.circular(12),
           ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 16,
-            color: AppColors.textSecondary,
-            fontWeight: FontWeight.w500,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(11),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final columns = (constraints.maxWidth / 150).floor().clamp(
+                  2,
+                  4,
+                );
+                return GridView.count(
+                  crossAxisCount: columns,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  crossAxisSpacing: 1,
+                  mainAxisSpacing: 1,
+                  childAspectRatio: 1.05,
+                  children: [
+                    for (final s in _stats)
+                      Container(
+                        color: AppColors.ink900,
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              s.$1,
+                              style: TextStyle(
+                                fontSize: 26,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: -0.8,
+                                color: s.$3 ? AppColors.copper : AppColors.bone,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              s.$2,
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 12,
+                                height: 1.35,
+                                color: AppColors.bone45,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ],

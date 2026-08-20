@@ -20,23 +20,29 @@
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="Mohamed Ramadan - Professional Flutter Developer Portfolio">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0A0A0C">
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="Mohamed Ramadan Portfolio">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link rel="apple-touch-icon" href="icons/Icon-180.png">
 
-  <!-- Favicon -->
+  <!-- Favicon: the composed-M mark, tile variant (see design/LOGO.md).
+       SVG first for crisp scaling; PNGs are the fallback. -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png"/>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"/>
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png"/>
   <link rel="icon" type="image/png" href="favicon.png"/>
 
   <title>Mohamed Ramadan - Flutter Developer Portfolio</title>
   <link rel="manifest" href="manifest.json">
 
-  <!-- Google Fonts -->
+  <!-- Google Fonts — Archivo (display/body) & JetBrains Mono (eyebrows/labels) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <!-- Splash Screen Styles -->
   <style>
@@ -47,7 +53,7 @@
     }
 
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Archivo', system-ui, sans-serif;
       overflow: hidden;
     }
 
@@ -57,7 +63,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+      background: #0A0A0C;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -79,14 +85,14 @@
     .logo-circle {
       width: 120px;
       height: 120px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #2563EB 0%, #06B6D4 100%);
+      border-radius: 22px;
+      background: #16161B;
+      border: 1px solid rgba(242, 238, 231, 0.14);
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
       animation: pulse 2s ease-in-out infinite;
-      box-shadow: 0 0 40px rgba(37, 99, 235, 0.3);
     }
 
     .logo-circle::before {
@@ -94,32 +100,40 @@
       position: absolute;
       width: 140px;
       height: 140px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #2563EB 0%, #06B6D4 100%);
-      opacity: 0.2;
+      border-radius: 26px;
+      border: 1px solid rgba(242, 118, 46, 0.3);
+      opacity: 0.5;
       animation: ripple 2s ease-in-out infinite;
     }
 
     .logo-text {
-      color: #F8FAFC;
+      color: #F2EEE7;
       font-size: 2rem;
       font-weight: 700;
-      letter-spacing: 2px;
+      letter-spacing: -1px;
       z-index: 1;
     }
 
+    .logo-text .accent {
+      color: #F2762E;
+    }
+
     .app-title {
-      color: #F8FAFC;
+      color: #F2EEE7;
       font-size: 2.5rem;
       font-weight: 600;
+      letter-spacing: -0.03em;
       margin-bottom: 0.5rem;
       text-align: center;
       animation: slideInUp 0.8s ease-out 0.3s both;
     }
 
     .app-subtitle {
-      color: #94A3B8;
-      font-size: 1.2rem;
+      color: rgba(242, 238, 231, 0.45);
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
       font-weight: 400;
       text-align: center;
       margin-bottom: 3rem;
@@ -135,8 +149,8 @@
 
     .loading-bar {
       width: 200px;
-      height: 4px;
-      background: #334155;
+      height: 2px;
+      background: rgba(242, 238, 231, 0.1);
       border-radius: 2px;
       overflow: hidden;
       margin-bottom: 1rem;
@@ -144,15 +158,17 @@
 
     .loading-progress {
       height: 100%;
-      background: linear-gradient(90deg, #2563EB 0%, #06B6D4 100%);
+      background: #F2762E;
       border-radius: 2px;
       width: 0%;
       animation: loadingProgress 3s ease-in-out infinite;
     }
 
     .loading-text {
-      color: #64748B;
-      font-size: 0.9rem;
+      color: rgba(242, 238, 231, 0.38);
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
       font-weight: 400;
     }
 
@@ -167,9 +183,9 @@
       position: absolute;
       width: 4px;
       height: 4px;
-      background: #06B6D4;
+      background: #F2762E;
       border-radius: 50%;
-      opacity: 0.6;
+      opacity: 0.5;
       animation: float 6s ease-in-out infinite;
     }
 
@@ -223,10 +239,6 @@
         height: 120px;
       }
       
-      .logo-text {
-        font-size: 1.5rem;
-      }
-      
       .app-title {
         font-size: 2rem;
       }
@@ -261,12 +273,15 @@
     
     <div class="logo-container">
       <div class="logo-circle">
-        <div class="logo-text">MR</div>
+        <svg width="46" height="46" viewBox="0 0 48 48" aria-hidden="true">
+          <path d="M6 39 L17 9 L24 26 L31 9 L42 39" fill="none" stroke="#F2EEE7" stroke-width="4.4" stroke-linejoin="miter" stroke-linecap="square"/>
+          <path d="M24 26 L31 9 L42 39" fill="none" stroke="#F2762E" stroke-width="4.4" stroke-linejoin="miter" stroke-linecap="square"/>
+        </svg>
       </div>
     </div>
-    
+
     <h1 class="app-title">Mohamed Ramadan</h1>
-    <p class="app-subtitle">Flutter Developer Portfolio</p>
+    <p class="app-subtitle">Flutter Developer · Obsidian &amp; Copper</p>
     
     <div class="loading-container">
       <div class="loading-bar">
